@@ -7,7 +7,6 @@ import { UserRole } from "@prisma/client"
 import { getTwoFactorConfirmationByUserId } from "./data/verification-token"
 
 
-
 export const {
   auth,
   signIn,

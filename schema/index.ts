@@ -37,8 +37,46 @@ const ResetSchema = z.object({
     }),
 })
 
+/**
+ * payment form validation schema
+ */
+const PaymentSchema = z.object({
+    from: z.string({
+        message: "Kindly select a prefered currency"
+    }),
+    to: z.string({
+        message: "Required"
+    }),
+    amount: z.string({
+        message: "Amount is required"
+    }),
+    type: z.string(),
+    network: z.string()
+})
+
+const PortfolioSchema = z.object({
+    name: z.string({
+        message: "portfolio name"
+    }),
+    sector: z.string({
+        message: "sector"
+    }),
+    amount: z.string({
+        message: "amount"
+    }),
+    roi: z.string({
+        message: "Daily ROI"
+    }),
+    closing_date: z.string({
+        message: "closing date"
+    }),
+    userid: optional(z.string())
+})
+
 export default {
     LoginSchema,
     RegisterSchema,
     ResetSchema,
+    PaymentSchema,
+    PortfolioSchema,
 }

@@ -11,6 +11,7 @@ import Schemas from "@/schema";
 import { AuthError } from "next-auth";
 import * as z from "zod";
 
+
 export const login = async (values: z.infer<typeof
     Schemas.LoginSchema>) => {
     const validatedValues = Schemas.LoginSchema.safeParse(values);
@@ -88,7 +89,6 @@ export const login = async (values: z.infer<typeof
 
     } catch (error) {
         if (error instanceof AuthError) {
-            console.log(error.type)
             switch (error.type) {
                 case "CredentialsSignin":
                     return {error: "Invalid credentials"}

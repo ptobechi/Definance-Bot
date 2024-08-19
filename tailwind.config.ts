@@ -19,6 +19,9 @@ const config = {
     },
     extend: {
       colors: {
+        sideBarColor: 'linear-gradient(135deg, #152ced, #0a1573)',
+        primaryColor: 'rgba(108,22, 56)',
+        secondaryColor: 'rgba(165,42, 90, 0.8)',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

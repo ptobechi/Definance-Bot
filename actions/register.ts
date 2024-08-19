@@ -9,34 +9,65 @@ import * as z from "zod";
 
 export const register = async (values: z.infer<typeof
     Schemas.RegisterSchema>) => {
-    const validatedValues = Schemas.RegisterSchema.safeParse(values);
+    try{
+        const validatedValues = Schemas.RegisterSchema.safeParse(values);
 
-    if (!validatedValues.success)
-        return {error: "Invalid fields!"}
+        if (!validatedValues.success)
+            return {error: "Invalid fields!"}
 
-    const {email, name, password} = validatedValues.data;
+        const {email, name, password} = validatedValues.data;
 
-    const existingUser = await getUserEmail(email);
+        const existingUser = await getUserEmail(email);
 
-    if (existingUser)
-        return {error: "User already exist!"}
+        if (existingUser)
+            return {error: "User already exist!"}
 
+        const registeredUserData = await db.user.create({
+            data: {
+                email,
+                name,
+                password,
+            },
+        })
 
-    await db.user.create({
-        data: {
+        if (registeredUserData) {
+            await db.cryptoPortfolio.createMany({
+                data: [
+                    {
+                        userId: registeredUserData.id,
+                        crypto_name: "Bitcoin",
+                        crypto_symbol: "btc",
+                        crypto_bal: "0.00",
+                        crypto_prev_bal: "0.00",
+                    },
+                    {
+                        userId: registeredUserData.id,
+                        crypto_name: "Ethereum",
+                        crypto_symbol: "eth",
+                        crypto_bal: "0.00",
+                        crypto_prev_bal: "0.00",
+                    },
+                    {
+                        userId: registeredUserData.id,
+                        crypto_name: "Tether USDT",
+                        crypto_symbol: "usdt",
+                        crypto_bal: "0.00",
+                        crypto_prev_bal: "0.00",
+                    },
+                ]
+            })
+        }
+        
+        //send verification link use resend.com
+        const verificationToken = await generateVerificationToken(email);
+
+        await sendVerificationToken(
             email,
-            name,
-            password,
-        },
-    })
+            verificationToken.token
+        )
 
-    //send verification link use resend.com
-    const verificationToken = await generateVerificationToken(email);
-
-    await sendVerificationToken(
-        email,
-        verificationToken.token
-    )
-
-    return {success: "Registration Successful, check inbox for confirmation link!"}
+        return {success: "Registration Successful, check inbox for confirmation link!"}
+    } catch {
+        return { error: "An unexpected error occurred. Please try again." };
+    }
 }

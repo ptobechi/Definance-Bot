@@ -23,18 +23,20 @@ enum UserRole {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  password      String?
-  image         String?
-  role          UserRole @default(USER)
-  accounts      Account[]
-  isTwoFactorEnabled Boolean @default(false)
-  twoFactorConfirmation    TwoFactorConfirmation?
- 
-  // @@map("users")
+  id                        String    @id @default(cuid())
+  name                      String?
+  email                     String?   @unique
+  emailVerified             DateTime?
+  password                  String?
+  image                     String?
+  role                      UserRole @default(USER)
+  accounts                  Account[]
+  isTwoFactorEnabled        Boolean @default(false)
+  twoFactorConfirmation     TwoFactorConfirmation?
+  transactions              Transactions[]
+  cryptoPortfolio           CryptoPortfolio[]
+  userPortfolio             UserPortfolio[]
+  
 }
 
 model Account {
@@ -90,4 +92,48 @@ model TwoFactorConfirmation {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+model Transactions {
+  id                      String @id @default(cuid())
+  userId                  String
+  transaction_type        String
+  transaction_amount      String
+  transaction_date        DateTime
+  transaction_status      String
+  transaction_info        String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model CryptoPortfolio {
+  id                     String @id @default(cuid())
+  userId                 String
+  crypto_name            String
+  crypto_symbol          String
+  crypto_bal             String
+  crypto_prev_bal        String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserPortfolio {
+  id                    String @id @default(cuid())
+  userId                String
+  name                  String
+  sector                String
+  roi                   Float
+  amount                Float
+  opened_date           DateTime @default(now())
+  close_date            DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PaymentWalletAddress {
+  id                           String @id @default(cuid())
+  name                         String
+  symbol                       String
+  network                      String
+  publicAddress                String
 }

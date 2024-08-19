@@ -1,3 +1,7 @@
+"use client"
+
+import { SelectedPlanProvider } from "@/hooks/selectedPlanContext";
+import SideBarMenu from "./_components/client-bar";
 
 interface ProtectedLayoutProps {
     children: React.ReactNode;
@@ -6,12 +10,15 @@ interface ProtectedLayoutProps {
 const ProtectedLayout = (
     {children}: ProtectedLayoutProps
 ) => {
+    
     return (
-        <div
-            className="h-full w-full flex flex-col gap-y-10 items-center
-            justify-center bg-[radial-gradient(ellipse_at_top,_var
-            (--tw-gradient-stops))] from-sky-400 to to-blue-800">
-            {children}
+        <div className="flex h-screen overflow-hidden">
+            <SideBarMenu />
+            <div className="flex-1 md:mx-5 mx-2 mt-28 overflow-y-auto">
+                <SelectedPlanProvider>
+                    {children}
+                </SelectedPlanProvider>
+            </div>
         </div>
     )
 }

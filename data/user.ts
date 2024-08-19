@@ -35,3 +35,36 @@ export const getUserByID = async (id: string) => {
         return null;
     }
 }
+
+/**
+ * getUserPortfolio - get all crypto holdings
+ * @param {String} id - userid
+ * @returns {String} - crypto portfolio
+ */
+export const getUserPortfolio = async (id: string) => {
+    try {
+        const portfolio = await db.cryptoPortfolio.findMany({
+            where: {
+                userId: id
+            }
+        });
+
+        if (portfolio.length === 0) {
+            return null;
+        }
+
+        return portfolio;
+
+    } catch (error) {
+        console.error("Error fetching portfolio:", error);
+        return null;
+    }
+}
+
+export const portfolio = async (id: string) => {
+    try {
+        
+    } catch (error) {
+        return {error: error}
+    }
+}

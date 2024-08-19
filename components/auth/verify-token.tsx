@@ -14,7 +14,6 @@ const VerifyTokenCard = () => {
     const [success, setSuccess] = useState<string | undefined>()
 
     const onSubmit = useCallback(() => {
-        console.log(token)
         if (!token) {
             setError("Token does not exist!")
             return;
