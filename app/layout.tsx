@@ -4,6 +4,7 @@ import "./globals.css";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/landing/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default async function RootLayout({
         <body className={inter.className}>
           <Toaster />
           {children}
+          <Footer/>
         </body>
       </html>
     </SessionProvider>
