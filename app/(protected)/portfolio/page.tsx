@@ -7,7 +7,7 @@ import useUserPortfolio from "@/hooks/useUserPortfolio";
 
 const Page = () => {
     const {data: portfolio, isLoading, error} = useUserPortfolio()
-
+    
     return (
         <>
             <DashHeader

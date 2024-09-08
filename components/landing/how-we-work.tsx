@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
 import widgets from "@/img/widgets.png";
 import AnimateOnScroll from "@/utils/AnimateOnScroll";
@@ -45,45 +47,35 @@ const HowWeWork = () => {
   return (
     <section className="px-5 lg:max-w-screen-xxl lg:mx-auto flex flex-col lg:flex-row lg:items-center">
       <div className="lg:w-1/2 mb-16 lg:mb-0">
-        <h1 className="text-[1.5rem] lg:text-2xl mb-4 lg:mb-6 text-primaryColor">
+        <h1 className="text-[1.5rem] lg:text-xl mb-2 font-bold lg:mb-6 text-primaryColor">
           How We Work
         </h1>
-        <p className="text-base lg:text-lg text-pcolor mb-10">
-          You may be planning for retirement, saving for education expenses, or
-          looking for strategies to grow and preserve your nest egg. We're here
-          to help you prioritize, plan, and stay on course to achieve your
-          financial goals. During onboarding, an investment professional will
-          guide you through a risk assessment to help determine your risk
-          tolerance for active investing.
+        <p className="text-base lg:text-sm text-pcolor mb-10">
+        Whether you're planning for retirement, saving for education, or strategizing to grow your wealth, Definance Bot is here to guide you every step of the way. Our onboarding process includes a personalized risk assessment by an investment professional to help you align your investment strategy with your risk tolerance and financial goals.
         </p>
 
         <div className="mb-8 flex flex-wrap items-center">
           <div className=" w-2/6 mb-4 md:mb-0 md:pr-8">
-            <h2 className="md:text-nowrap pl-4 text-base lg:text-[1.25rem] text-sideBg">
+            <h2 className="md:text-nowrap pl-4 text-base lg:text-[1.25rem] text-primaryColor">
               Our Story
             </h2>
           </div>
           <div className="w-4/6">
             <p className="text-pcolor text-sm md:text-[0.94rem] md:border-l md:border-gray-300 px-4 md:px-12">
-              Our firm was built on the premise that investors are best served
-              by advisors who are motivated to focus exclusively on the best
-              interests of their clients.
+            Definance Bot was founded on the belief that investors deserve advisors who prioritize their clients' best interests above all else. We are dedicated to providing transparent, client-focused services that help you navigate the complexities of the digital asset market.
             </p>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center">
           <div className="w-2/6 mb-4 md:mb-0 md:pr-8">
-            <h2 className="md:text-nowrap pl-4  text-base md:text-[1.25rem] text-sideBg">
+            <h2 className="md:text-nowrap pl-4  text-base md:text-[1.25rem] text-primaryColor">
               Our Mission
             </h2>
           </div>
           <div className="w-4/6">
             <p className="text-pcolor text-sm md:text-[0.94rem] md:border-l md:border-gray-300 px-4 md:px-12">
-            At KoinMart, we are proud to unveil a groundbreaking platform tailored 
-            for the dynamic and ever-evolving crypto trading industry. 
-            Our mission is to redefine the way you experience cryptocurrency trading, 
-            making it seamless, secure, and tailored to your unique needs.
+            At Definance Bot, our mission is to revolutionize cryptocurrency management and trading. We strive to deliver a seamless, secure, and personalized experience that meets the evolving needs of our clients in the fast-paced world of crypto finance.
             </p>
           </div>
         </div>

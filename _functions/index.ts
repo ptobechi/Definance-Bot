@@ -1,5 +1,8 @@
-
-import { API_KEY, STOCK_API_KEY, Stocks } from "@/config";
+import {
+    API_KEY,
+    STOCK_API_KEY,
+    Stocks
+} from "@/config";
 
 export const formatDate = (dateString: any) => {
     const date = new Date(dateString);

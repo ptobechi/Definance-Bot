@@ -10,7 +10,7 @@ export const publicRoutes = [
 
 /**
  * An array of routes that is used for authentications
- * Redirects loggedin users to dahboard
+ * Redirects loggedin users to dashboard
  * @type {string[]}
  */
 export const authRoutes = [

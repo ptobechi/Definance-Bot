@@ -1,31 +1,45 @@
 import { db } from '@/lib/db';
 
-export const GET = async (req: Request,
-    { params }: { params: { id: string }
-}) => {
-    const { id } = params;
+// Next.js 13+ route configuration options
+export const runtime = 'edge';  // Example configuration if you want to run the route on the Edge runtime
+export const dynamic = 'force-dynamic'; // Forces dynamic rendering for this route, if needed
 
-    if (!id) {
-        new Response(JSON.stringify({
-            error: "ID is required"
-        }),
-        {
-            status: 400,
-            headers: { "Content-Type": "application/json"}
-        })
-    }
+export const GET = async (
+  req: Request,
+  { params }: { params: { id: string } }
+) => {
+  const { id } = params;
 
-    const portfolio = await db.userPortfolio.findMany({
-        where:{
-            userId: id
-        }
-    })
+  if (!id) {
+    return new Response(
+      JSON.stringify({
+        error: 'ID is required',
+      }),
+      {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+  }
 
-    if (portfolio.length === 0) return null
+  const portfolio = await db.userPortfolio.findMany({
+    where: {
+      userId: id,
+    },
+  });
 
-    return new Response(JSON.stringify(portfolio), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-    });
-}
+  if (portfolio.length === 0) {
+    return new Response(
+      JSON.stringify({ error: 'No portfolio found for the provided ID' }),
+      {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+  }
 
+  return new Response(JSON.stringify(portfolio), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
+};

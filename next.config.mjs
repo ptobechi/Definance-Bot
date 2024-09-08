@@ -1,11 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-export default {
-    nextConfig,
+const nextConfig = {
     images: {
-        domains: ['financialmodelingprep.com'], // Add your domain here
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'financialmodelingprep.com',
+          pathname: '/**',  // Allow all paths from the specified hostname
+        },
+      ],
     },
-}
-
-// export default nextConfig;
+};
+  
+export default nextConfig;
+  

@@ -5,15 +5,25 @@ import * as z from "zod";
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 
-export const POST = async (values: z.infer<typeof
-    schema.PaymentSchema>) => {
+export const POST = async (values: Request) => {
         const validatedValues = schema.PaymentSchema.safeParse(values);
         
         const loggedUser = await currentUser();
         
-        if (!loggedUser || !loggedUser.id) return {error: "Login to a valid account to complete this process"}
+        if (!loggedUser || !loggedUser.id)
+                return new Response(JSON.stringify(
+                    {error: "Login to a valid account to complete this process"}),{
+                    status: 504,
+                    headers: { "Content-Type": "application/json" },
+                });
+        
 
-        if (!validatedValues.success) return {error: "Invalid fileds!"}
+        if (!validatedValues.success)
+                return new Response(JSON.stringify(
+                    {error: "Invalid fileds!"}),{
+                    status: 500,
+                    headers: { "Content-Type": "application/json" },
+                });
 
         const {amount, from, to, type, network} = validatedValues.data;
 
@@ -28,10 +38,17 @@ export const POST = async (values: z.infer<typeof
 
             const random = Math.floor(Math.random() * allPaymentAddr.length);
 
-            return {
-                paymentAddr: allPaymentAddr[random].publicAddress,
-                network: allPaymentAddr[random].network
-            }
+            return new Response(JSON.stringify(
+                {
+                    paymentAddr: allPaymentAddr[random].publicAddress,
+                    network: allPaymentAddr[random].network
+                }),
+                {
+                    status: 200,
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+
         }
         
         await db.transactions.create({
@@ -44,5 +61,11 @@ export const POST = async (values: z.infer<typeof
                 transaction_info: `${amount}, ${type} from: ${from} - to: ${to}`
             }
         })
-        return {success: "Your transaction is being proceed on the blockchain"}
+        return new Response(JSON.stringify(
+            {success: "Your transaction is being proceed on the blockchain"}),
+            {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
+            }
+        );
 }

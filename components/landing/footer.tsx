@@ -9,14 +9,14 @@ const Footer = () => {
   const quickLinks = [
     { title: "About", path: "/about" },
     { title: "Services", path: "/services" },
-    { title: "Brokers", path: "" },
-    { title: "Terms and Condition", path: "" },
-    { title: "Legal Right", path: "" },
+    { title: "Brokers", path: "/brokers" },
+    { title: "Terms and Condition", path: "/terms" },
+    { title: "Legal Right", path: "/legal" },
   ];
 
   const support = [
     { title: "Contact", path: "/contact" },
-    { title: "FAQ", path: "" },
+    { title: "FAQ", path: "/faq" },
   ];
 
   return (
@@ -26,11 +26,7 @@ const Footer = () => {
           <div className="col-span-2">
             <h4 className="text-primaryColor text-xl mb-8">About Company</h4>
             <p className="text-pcolor">
-            KoinMart is not just a platform; it's a gateway to the future of 
-            crypto trading. Whether you're a trader, investor, or someone 
-            exploring the potential of digital assets, we invite you to join us 
-            on this exciting journey. Experience a platform that is as dynamic 
-            as the crypto industry itself – welcome to KoinMart.
+            Definance Bot is more than just a platform; it's your gateway to the future of digital finance. Whether you're a crypto trader, investor, or someone curious about the potential of digital assets, we invite you to join us on this transformative journey. Experience a platform as dynamic and innovative as the crypto industry itself – welcome to Definance Bot.
             </p>
           </div>
 
@@ -58,13 +54,13 @@ const Footer = () => {
           </div>
 
           <div>
-          <h4 className="text-primaryColor text-xl mb-8">Support</h4>
+            <h4 className="text-primaryColor text-xl mb-8">Support</h4>
 
             <p className="text-base text-pcolor flex items-center mb-5">
               <span className="text-primaryColor text-lg mr-4">
                 <MdEmail />
               </span>
-              <a href="mailto:support@.com">support@koinmart.co</a>
+              <a href="mailto:support@.com">support@definance.com</a>
             </p>
             <p className="text-base text-pcolor flex items-center mb-5">
               <span className="text-primaryColor text-lg mr-4">
@@ -85,11 +81,8 @@ const Footer = () => {
               Legal Information
         </h4>
         <p className="text-sm">
-            Copyright © 2024 – All rights reserved.
-            Foris Banks is a trademark of ForisAI Group Ltd, a leading FinTech company.
-            The website is owned by ForisAI Group Ltd and operated by ForisAI Capital Ltd, which is authorized and regulated by the Financial Services Authority Seychelles (FSA) under licence No. SD026. The registered address is CT House, Office 9A, 2nd Floor, Providence, Mahe, Seychelles. Tel: +2482574498.
-            The group also includes ForisAI Global (CY) Ltd, with registered address at Nikokreontos 2, NICE DREAM, 6th floor, Flat/Office 601, 1066, Nicosia, Cyprus. ForisAI Global (CY) Ltd is wholly owned by ForisAI Group Ltd.
-            Foris Banks is registered under company number C88391 in Malta. The registered address is LEVEL 7, SPINOLA PARK, TRIQ MIKIEL ANG BORG, ST. JULIANS, Malta.
+        Copyright © 2024 – All rights reserved. Definance Bot is a trademark of Definance Group Ltd, a leading FinTech company. This website is owned by Definance Group Ltd and operated by Definance Capital Ltd, which is authorized and regulated by the Financial Services Authority Seychelles (FSA) under license No. SD026. The registered address is CT House, Office 9A, 2nd Floor, Providence, Mahe, Seychelles. Tel: +2482574498.
+        The group also includes Definance Global (CY) Ltd, with a registered address at Nikokreontos 2, NICE DREAM, 6th floor, Flat/Office 601, 1066, Nicosia, Cyprus. Definance Global (CY) Ltd is wholly owned by Definance Group Ltd. Definance Bot is registered under company number C88391 in Malta, with its registered address at LEVEL 7, SPINOLA PARK, TRIQ MIKIEL ANG BORG, ST. JULIANS, Malta.
         </p>
         <div className="mt-12 flex flex-col md:flex-row justify-between items-center pb-12">
             <AnimateOnScroll animation="fadeInLeft">

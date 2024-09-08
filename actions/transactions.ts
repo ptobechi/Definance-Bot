@@ -1,10 +1,12 @@
 "use server"
+
 import schema from "@/schema";
 import * as z from "zod";
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getUserPortfolio } from "@/data/user";
 import { usd2crypto } from "@/_functions";
+
 
 export const transaction = async (values: z.infer<typeof
     schema.PaymentSchema>) => {
@@ -18,8 +20,11 @@ export const transaction = async (values: z.infer<typeof
 
         const {amount, from, to, type, network} = validatedValues.data;
 
-        // convert amount to crypto
+        // convert from amount to crypto value
         const from_crypto_rate: any = await usd2crypto(from.toString(), amount);
+
+        // Convert crypto_bal to a number
+        const to_crypto_rate: any = await usd2crypto(to.toString(), amount);
 
         if (!to && type === "deposit") {
             // generate payment address and return to user
@@ -39,18 +44,18 @@ export const transaction = async (values: z.infer<typeof
         }
 
         if (type === "convert") {
-
             // get from balance
             const portfolio = await getUserPortfolio(loggedUser.id)
 
             if (!portfolio) return {error: "unable to load your portfolio balance, please try again later"}
 
-            const fromBalIndex = portfolio.findIndex(item => item.crypto_symbol.toLowerCase() === from.toLowerCase());
+            const fromBalIndex = portfolio.findIndex((item: any) => item.crypto_symbol.toLowerCase() === from.toLowerCase());
 
             if (fromBalIndex === -1) return {error: `you do not have enough ${from.toUpperCase()}, kindly top-up and try again`}
 
             const fromBal: any = portfolio[fromBalIndex];
 
+            if (!fromBal) return {error: "unable to complete request at this time, try again later"};
 
             // Ensure crypto_rate is valid and that the user has enough balance
             if (isNaN(from_crypto_rate)
@@ -61,28 +66,47 @@ export const transaction = async (values: z.infer<typeof
                 return { error: "insufficient balance" };
             }
 
-            // add amount to to balance
+            // add crypto equivatent of amount to destination balance
             const toBalIndex = portfolio.findIndex(
-                item => item.crypto_symbol.toLowerCase() === to.toLowerCase());
+                (item: any) => item.crypto_symbol.toLowerCase() === to.toLowerCase());
 
             if (toBalIndex === -1)
                 return {error: `failed to complete request, try again`}
 
-            // Convert crypto_bal to a number
-            const to_crypto_rate: any = await usd2crypto(to, amount);
             const toBal: any = portfolio[toBalIndex];
 
+            // update portfolio balance
+            const newFromAccountBalance = parseFloat(fromBal.crypto_bal) - from_crypto_rate
+            const newToAccountBalance = parseFloat(toBal.crypto_bal) + to_crypto_rate
 
-             // update portfolio balance
-             const oldBalance = fromBal.crypto_bal - from_crypto_rate
-             const newBalance = toBal.crypto_bal + to_crypto_rate
-
-            // update db with new balance
-            console.log("rate", from_crypto_rate)
-            console.log("from bal", fromBal.crypto_bal)
-            console.log("amount", amount)
-            console.log("old portfolio balance", oldBalance)
-            console.log("new portfolio balance", newBalance)
+            // Update the balance for the 'from' cryptocurrency
+            await db.cryptoPortfolio.update({
+                where: {
+                    userId_crypto_symbol: {
+                        userId: loggedUser.id,
+                        crypto_symbol: from.toLowerCase(),
+                    },
+                },
+                data: {
+                    // crypto_prev_bal: fromPortfolio.crypto_bal, // Set previous balance
+                    crypto_bal: newFromAccountBalance.toString(), // Set new balance
+                },
+            });
+        
+            // Update the balance for the 'to' cryptocurrency
+            await db.cryptoPortfolio.update({
+                where: {
+                    userId_crypto_symbol: {
+                        userId: loggedUser.id,
+                        crypto_symbol: to.toLowerCase(),
+                    },
+                },
+                data: {
+                    // crypto_prev_bal: toPortfolio.crypto_bal, // Set previous balance
+                    crypto_bal: newToAccountBalance.toString(), // Set new balance
+                },
+            });
+        
 
             return {success: "Your transaction is being proceed on the blockchain"}
         }
@@ -102,8 +126,4 @@ export const transaction = async (values: z.infer<typeof
             }
         })
         return {success: "Your transaction is being proceed on the blockchain"}
-}
-
-export const debitTransactions = async () => {
-
 }

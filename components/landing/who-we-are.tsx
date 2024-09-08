@@ -22,32 +22,33 @@ const WhoWeAre = () => {
                     Company Overview
                     </h1>
                     <p className="font-normal text-pcolor text-sm x:text-base">
-                    Welcome to Foris AI Bank, where we redefine banking with innovative solutions and a customer-centric approach. 
-                    Foris AI Bank has grown to become a leading financial institution, trusted by millions. 
-                    Our mission is to provide seamless, secure, and personalized banking experiences that cater to the diverse needs of our customers.
+                    Welcome to Definance Bot, where we redefine financial management with cutting-edge solutions and a client-first approach. Definance Bot has emerged as a trusted leader in digital asset management, serving millions of users worldwide. Our mission is to offer seamless, secure, and personalized financial experiences that meet the diverse needs of our clients.
                     </p>
 
                     <h1 className="text-[20px] font-bold mt-6 x:text-[22px] lg:text-xl text-primaryColor mb-2">
-                    Explore Foris Bank’s Features and Services
+                    Explore Definance Bot’s Features and Services 
                     </h1>
 
                     <p className="font-normal text-pcolor text-sm x:text-base">
-                    At Foris AI Bank, we are guided by a set of core values that shape our 
-                    culture and define our identity:
+                    At Definance Bot, our core values drive our culture and define who we are:
                     </p>
 
                     <ul className="mt-3 space-y-3">
                         <li className="text-sm">
-                            <strong>Secure Banking: </strong>State-of-the-art encryption and security protocols to safeguard your financial data.
+                            <strong>Secure Financial Management: </strong>
+                            Utilizing state-of-the-art encryption and security protocols, we ensure your digital assets and financial data are always protected.
                         </li>
                         <li className="text-sm">
-                            <strong>Comprehensive Asset Management: </strong> Easily manage your assets with our user-friendly interface and powerful tools.
+                            <strong>Comprehensive Asset Management: </strong> 
+                            Manage your crypto portfolio effortlessly with our intuitive interface and advanced tools, designed to optimize your investment strategies.
                         </li>
                         <li className="text-sm">
-                            <strong>24/7 Customer Support: </strong> Dedicated support team available around the clock to assist with any queries or issues.
+                            <strong>24/7 Customer Support: </strong> 
+                            Our dedicated support team is available around the clock to assist you with any questions or concerns, ensuring a smooth and reliable experience.
                         </li>
                         <li className="text-sm">
-                            <strong>Excellence: </strong> We strive for excellence in every aspect of our business.
+                            <strong>Excellence: </strong> 
+                            We are committed to excellence in every aspect of our operations, continuously improving to provide the best service to our clients.
                         </li>
                     </ul>
                 </div>
@@ -65,9 +66,7 @@ const WhoWeAre = () => {
                         Innovative Technology
                         </h2>
                         <p className="text-sm" style={{lineHeight: "30px", display:"block"}}>
-                        At Foris Bank, we utilize the latest in AI and machine learning to 
-                        provide cutting-edge financial solutions that enhance your trading and 
-                        banking experience.
+                        At Definance Bot, we leverage the latest advancements in AI and machine learning to deliver state-of-the-art financial solutions. Our technology enhances your crypto management and investment experience, making it smarter and more efficient.
                         </p>
                     </div>
 
@@ -76,8 +75,7 @@ const WhoWeAre = () => {
                         Personalized Financial Services
                         </h2>
                         <p className="text-sm" style={{lineHeight: "30px", display:"block"}}>
-                        We understand that every financial journey is unique. Our platform offers 
-                        tailored advice and customizable tools to meet your specific needs and goals.
+                        We recognize that every financial journey is unique. Definance Bot offers tailored advice and customizable tools designed to meet your specific needs and help you achieve your financial goals.
                         </p>
                     </div>
 
@@ -86,8 +84,7 @@ const WhoWeAre = () => {
                         Unmatched Security
                         </h2>
                         <p className="text-sm" style={{lineHeight: "30px", display:"block"}}>
-                        Your security is our top priority. We implement advanced encryption and 
-                        multi-factor authentication to safeguard your data and transactions.
+                        Your security is our utmost priority. We utilize advanced encryption, multi-factor authentication, and robust security protocols to ensure your digital assets and transactions are always protected.
                         </p>
                     </div>
                 </div>
@@ -98,8 +95,7 @@ const WhoWeAre = () => {
                         Exceptional Customer Support
                         </h2>
                         <p className="text-sm" style={{lineHeight: "30px", display:"block"}}>
-                        Our support team is available 24/7, ensuring that you 
-                        receive timely assistance and guidance whenever you need it.
+                        Our dedicated support team is available 24/7, providing you with timely assistance and expert guidance whenever you need it. We're here to ensure your experience with Definance Bot is seamless and stress-free.
                         </p>
                     </div>
 
@@ -108,9 +104,7 @@ const WhoWeAre = () => {
                         User-Centric Design
                         </h2>
                         <p className="text-sm" style={{lineHeight: "30px", display:"block"}}>
-                        Our platform is designed with you in mind. Enjoy an 
-                        intuitive and user-friendly interface that makes managing 
-                        your finances and investments straightforward and efficient.
+                        Definance Bot’s platform is designed with your needs in mind. Our intuitive and user-friendly interface simplifies the management of your crypto assets, investments, and financial planning.
                         </p>
                     </div>
 
@@ -119,9 +113,7 @@ const WhoWeAre = () => {
                         Comprehensive Resources
                         </h2>
                         <p className="text-sm" style={{lineHeight: "30px", display:"block"}}>
-                        Access a wealth of resources, including tutorials, FAQs, 
-                        and performance analytics, to empower you to make 
-                        informed financial decisions.
+                        Empower yourself with a wide range of resources, including tutorials, FAQs, and performance analytics. Definance Bot equips you with the knowledge and tools you need to make informed financial decisions.
                         </p>
                     </div>
                 </div>

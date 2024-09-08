@@ -20,6 +20,17 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { FaArrowLeft } from "react-icons/fa";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 const Page = () => {
   const [step, setStep] = useState(0);
@@ -137,9 +148,30 @@ const Page = () => {
                                 crypto market.
                             </Label>
                             <CardFooter>
-                                <Button className="w-full mt-5">
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <Button className="w-full mt-5" variant="outline">
+                                        Connect Wallet
+                                    </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                        Oops
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This service is not available at the moment
+                                    </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction>Continue</AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                                {/* <Button className="w-full mt-5">
                                     Connect Wallet 
-                                </Button>
+                                </Button> */}
                             </CardFooter>
                             </>
                         }

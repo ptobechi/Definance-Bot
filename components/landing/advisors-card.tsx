@@ -40,11 +40,7 @@ const AdvisorsCard = () => {
               Funding Life Goals
             </h1>
             <p className="font-normal text-pcolor text-sm x:text-base">
-              From retirement planning to education funding, eldercare
-              considerations, and legacy planning. KoinMart financial advisors
-              work with their clients to understand their most urgent concerns
-              and create custom financial strategies to set them on the right
-              path.
+            Whether you're planning for retirement, funding education, considering eldercare, or focusing on legacy planning, Definance Bot’s financial advisors are here to help. We work closely with you to understand your most pressing concerns and craft custom financial strategies that align with your life goals.
             </p>
           </div>
         </div>
@@ -59,11 +55,7 @@ const AdvisorsCard = () => {
               Investment Management
             </h1>
             <p className="font-normal text-pcolor text-sm x:text-base">
-              A financial plan is only as good as the investment engine that
-              powers it. KoinMart builds, manages, and monitors investment
-              portfolios for clients that are tailored to their personal risk
-              tolerances and designed to help them achieve their financial and
-              life goals.
+            A solid financial plan requires a strong investment engine. Definance Bot builds, manages, and monitors tailored investment portfolios designed to match your personal risk tolerance and support your journey toward achieving your financial aspirations.
             </p>
           </div>
         </div>
@@ -78,10 +70,7 @@ const AdvisorsCard = () => {
               Risk Management
             </h1>
             <p className="font-normal text-pcolor text-sm x:text-base">
-              Protecting against unforeseen events is a critical part of a
-              well-crafted plan. KoinMart helps clients identify the many
-              risks they face, stress test their financial plans, and implement
-              strategies to manage risks to their lives, goals, and plans.
+            Life is unpredictable, but a well-crafted financial plan can offer protection. Definance Bot helps you identify potential risks, stress test your financial strategies, and implement measures to safeguard your life goals and future plans.
             </p>
           </div>
         </div>

@@ -20,7 +20,7 @@ interface UserPortfolio {
 const useUserPortfolio =  () => {
     const loggedUser = useCurrentUser();
 
-    // if (!loggedUser || !loggedUser.id) return {}
+    if (!loggedUser || !loggedUser.id) return {}
 
 
     // Define a fetcher that uses the loggedUser.id

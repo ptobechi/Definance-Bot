@@ -1,12 +1,30 @@
 "use client"
+
 import React from 'react'
 import Link from 'next/link'
 import { FiMenu as Icon } from 'react-icons/fi'
 import { FaUser } from 'react-icons/fa'
 
 import logo from '@/img/logo.svg'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from '@/components/ui/button'
+import { useCurrentUser } from '@/hooks/active-user-session'
+import {signOut } from "next-auth/react";
+
 
 export default function MenuBarMobile({ setter }: any) {
+    const onSubmit = () => {
+        signOut()
+    }
+
+    const user = useCurrentUser();
+
     return (
         <nav
             className="fixed top-0 left-0 right-0 h-[60px]
@@ -28,12 +46,48 @@ export default function MenuBarMobile({ setter }: any) {
                     height={50}
                 />
             </Link>
-            <Link
-                className="text-3xl flex text-black md:ml-auto mr-0"
-                href="/login"
-            >
-                <FaUser />
-            </Link>
+
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button
+                        variant="outline"
+                        className="text-3xl flex text-black
+                            md:ml-auto mr-0 rounded-full 
+                            p-4 py-4 items-center justify-center
+                        "
+                        >
+                        <FaUser className='text-lg' />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                    <DropdownMenuLabel>
+                        {user?.name}
+                    </DropdownMenuLabel>
+
+                    <DropdownMenuSeparator />
+
+                    {/* <DropdownMenuLabel>
+                        <Link href={"/profile"}>
+                            Profile
+                        </Link>
+                    </DropdownMenuLabel> */}
+
+                    {/* <DropdownMenuLabel>
+                        <Link href={"/activities"}>
+                        Activities
+                        </Link>
+                    </DropdownMenuLabel> */}
+
+                    <DropdownMenuLabel>
+                        <div
+                            onClick={onSubmit}
+                            className={`flex gap-1 cursor-pointer [&>*]:my-auto text-md `}
+                        >
+                            <div>Log Out</div>
+                        </div>
+                    </DropdownMenuLabel>
+                </DropdownMenuContent>
+            </DropdownMenu>
         </nav>
     )
 }
