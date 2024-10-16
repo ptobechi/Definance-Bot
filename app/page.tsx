@@ -33,12 +33,10 @@ const Home = () => {
             <h1 className="text-4xl font-bold tracking-tight
              text-gray-900 sm:text-6xl"
             >
-              Effortless and Secure Digital Asset Management
+              Where Smart Investing Meets AI Innovation!
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-            Experience the ultimate platform for managing your crypto portfolio, AI-driven staking, and secure loans. Our app offers the fastest, safest, and most reliable solutions for digital assets, international transfers, and crypto recovery.
-
-
+              Unlock the potential of your investments with our cutting-edge AI technology. Join a community of forward-thinking investors and take control of your financial future today! Let’s turn your investment dreams into reality!
             </p>
             <div className="mt-5 flex items-center gap-x-6">
               <Link

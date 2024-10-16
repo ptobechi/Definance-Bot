@@ -1,9 +1,7 @@
 import portfolio from "@/img/portfolio.png";
 import { ImQuotesRight } from "react-icons/im";
-import { FaSearchDollar } from "react-icons/fa";
-import { GiWallet } from "react-icons/gi";
-import { ImStatsDots } from "react-icons/im";
 import Image from "next/image";
+import { Fa1, Fa2, Fa3 } from "react-icons/fa6";
 
 const AdvisorsCard = () => {
   return (
@@ -26,51 +24,65 @@ const AdvisorsCard = () => {
       </div>
 
       <div className="lg:ml-[6%] lg:w-1/2">
-        <p className="text-primaryColor text-base font-normal text-left mb-8">
-          Grow with advisors you trust.
+        <p className="text-primaryColor text-base font-normal text-left mb-5">
+          3 simple steps to achieving success with us:
         </p>
         <div className="flex mb-6 gap-x-6">
           <div className="px-2">
             <div className="w-16 h-16 rounded-md flex items-center justify-center bg-primaryColor py-4 text-white text-[1.875rem]">
-              <FaSearchDollar />
+              <Fa1 />
             </div>
           </div>
           <div className="">
-            <h1 className="text-[20px] x:text-[22px] lg:text-xl text-primaryColor mb-2">
-              Funding Life Goals
+            <h1 className="text-sm font-bold mb-1 x:text-[22px] lg:text-[18px] text-primaryColor">
+              Find your Niche:
             </h1>
-            <p className="font-normal text-pcolor text-sm x:text-base">
-            Whether you're planning for retirement, funding education, considering eldercare, or focusing on legacy planning, Definance Bot’s financial advisors are here to help. We work closely with you to understand your most pressing concerns and craft custom financial strategies that align with your life goals.
+            <p className="font-normal text-pcolor text-[14px] x:text-base">
+              By focusing on a particular market or strategy—such as tech 
+              stocks in the NASDAQ, safe-haven assets like Gold, 
+              or emerging cryptocurrencies—you can leverage your strengths 
+              and interests to choose what you will like to invest in.
             </p>
           </div>
         </div>
         <div className="flex mb-6 gap-x-6">
-          <div className=" px-2">
+          <div className="px-2">
             <div className="w-16 h-16 rounded-md flex items-center justify-center bg-white py-4 text-primaryColor border border-mainGreen text-[1.875rem]">
-              <ImStatsDots />
+              <Fa2 />
             </div>
           </div>
           <div className="">
-            <h1 className="text-[20px] x:text-[22px] lg:text-xl text-primaryColor mb-2">
-              Investment Management
+            <h1 className="text-sm font-bold mb-1 x:text-[22px] lg:text-[18px] text-primaryColor">
+              ⁠Fund your Defibot account with capital:
             </h1>
             <p className="font-normal text-pcolor text-sm x:text-base">
-            A solid financial plan requires a strong investment engine. Definance Bot builds, manages, and monitors tailored investment portfolios designed to match your personal risk tolerance and support your journey toward achieving your financial aspirations.
+              This refers to the process of adding capital to your trading 
+              account to start investing in markets like the S&P 500, 
+              NASDAQ 100, Gold, Bitcoin, and Ethereum. 
+              This initial investment allows you to purchase assets and 
+              take advantage of market opportunities. 
+              By effectively funding your account, you position 
+              yourself to grow your portfolio across diverse asset classes, 
+              leveraging both traditional and emerging markets to achieve 
+              your financial goals.
             </p>
           </div>
         </div>
         <div className="flex gap-x-6">
           <div className=" px-2">
             <div className="w-16 h-16 rounded-md flex items-center justify-center bg-primaryColor py-4 text-white text-[1.875rem]">
-              <GiWallet />
+              <Fa3 />
             </div>
           </div>
           <div className="">
-            <h1 className="text-[20px] x:text-[22px] lg:text-xl text-primaryColor mb-2">
-              Risk Management
+            <h1 className="text-sm font-bold mb-1 x:text-[22px] lg:text-[18px] text-primaryColor">
+              ⁠Fill up your pockets with profits
             </h1>
             <p className="font-normal text-pcolor text-sm x:text-base">
-            Life is unpredictable, but a well-crafted financial plan can offer protection. Definance Bot helps you identify potential risks, stress test your financial strategies, and implement measures to safeguard your life goals and future plans.
+              By leveraging market trends, expert insights, and effective 
+              trading strategies, investors aim to enhance their 
+              financial wealth and achieve their financial objectives in 
+              these diverse asset classes.
             </p>
           </div>
         </div>

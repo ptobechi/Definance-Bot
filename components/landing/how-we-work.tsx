@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import widgets from "@/img/widgets.png";
 import AnimateOnScroll from "@/utils/AnimateOnScroll";
 import Image from "next/image";
+import Heatmap from "../widgets/heatmap";
+import TickerTape from "../widgets/tickerTape";
 
 
 const HowWeWork = () => {
@@ -50,8 +52,72 @@ const HowWeWork = () => {
         <h1 className="text-[1.5rem] lg:text-xl mb-2 font-bold lg:mb-6 text-primaryColor">
           How We Work
         </h1>
-        <p className="text-base lg:text-sm text-pcolor mb-10">
-        Whether you're planning for retirement, saving for education, or strategizing to grow your wealth, Definance Bot is here to guide you every step of the way. Our onboarding process includes a personalized risk assessment by an investment professional to help you align your investment strategy with your risk tolerance and financial goals.
+        <p className="text-sm lg:text-sm text-pcolor mb-5">
+          At Definancebot, we leverage cutting-edge artificial intelligence 
+          to empower investors with data-driven insights and automated 
+          trading strategies. Our process is designed to 
+          enhance decision-making and optimize returns:
+        </p>
+        
+        <p className="text-base lg:text-sm text-pcolor mb-2">
+          <span className="text-sm mr-1 lg:text-sm mb-2 font-bold lg:mb-6 text-primaryColor">
+          Advanced AI Algorithms:
+          </span>
+          Our proprietary AI models analyze vast 
+          amounts of historical and real-time market data across various assets, 
+          including the Nvidia, S&P 500, NASDAQ 100, Gold, Bitcoin, 
+          and Ethereum. These models identify patterns and trends 
+          that human analysts might miss.
+        </p>
+
+        <p className="text-sm lg:text-sm text-pcolor mb-2">
+          <span className="mr-1 lg:text-sm mb-2 font-bold lg:mb-6 text-primaryColor">
+          Predictive Analytics:
+          </span>
+          Based on data analysis, our AI generates accurate price predictions, 
+          helping investors understand potential market movements. 
+          This predictive capability allows for timely and informed 
+          trading decisions.
+        </p>
+
+        <TickerTape/>
+
+        <p className="text-sm lg:text-sm text-pcolor mb-2">
+          <span className="mr-1 lg:text-sm mb-2 font-bold lg:mb-6 text-primaryColor">
+            Automated Trade Execution: 
+          </span>
+          Investors can set their trading preferences and let 
+          our platform execute trades automatically based on AI 
+          recommendations. This ensures swift action on favorable market 
+          conditions, maximizing profit potential while minimizing 
+          emotional decision-making.
+        </p>
+
+        <p className="text-sm lg:text-sm text-pcolor mb-2">
+          <span className="mr-1 lg:text-sm mb-2 font-bold lg:mb-6 text-primaryColor">
+          Continuous Learning 
+          </span>
+          Our AI systems continually learn from market performance and adapt 
+          strategies accordingly. This ongoing refinement process 
+          helps maintain accuracy and relevance in ever-changing 
+          market environments.
+        </p>
+
+        <p className="text-sm lg:text-sm text-pcolor mb-2">
+          <span className="mr-1 lg:text-sm mb-2 font-bold lg:mb-6 text-primaryColor">
+          Risk Management: 
+          </span>
+          We prioritize risk management by incorporating stop-loss orders 
+          and portfolio diversification strategies. 
+          Our AI assesses market volatility and adjusts 
+          recommendations to help protect investors' capital.
+        </p>
+
+        <p className="text-sm lg:text-sm text-pcolor mb-2">
+          By combining sophisticated technology with a focus on investor 
+          education and support, Definancebot aims to deliver steady and 
+          reliable returns while navigating the complexities of today’s 
+          financial markets.
         </p>
 
         <div className="mb-8 flex flex-wrap items-center">
@@ -82,13 +148,17 @@ const HowWeWork = () => {
       </div>
 
       <div className="lg:w-1/2 relative mt-8 lg:mt-0">
-        <AnimateOnScroll animation="fadeInRight">
+        <div className="mx-10">
+          <Heatmap  />
+        </div>
+
+        {/* <AnimateOnScroll animation="fadeInRight">
           <Image
             className="object-cover"
             src={widgets}
             alt="images of various icons"
           />
-        </AnimateOnScroll>
+        </AnimateOnScroll> */}
         <div
           ref={progressBarRef}
           className="w-2/5 sm:w-1/3 py-6 px-1 flex flex-col bg-gray-50  items-center justify-center absolute top-0 left-7 border border-gray-200 z-10 rounded-md"
