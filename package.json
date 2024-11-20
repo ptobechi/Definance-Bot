@@ -1,5 +1,5 @@
 {
-  "name": "profile",
+  "name": "Definance-Bot",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -29,6 +29,7 @@
     "next-auth": "^5.0.0-beta.20",
     "next-barcode": "^1.5.0",
     "next-themes": "^0.3.0",
+    "next-transpile-modules": "^10.0.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.1",
@@ -40,7 +41,8 @@
     "resend": "^3.5.0",
     "slick-carousel": "^1.8.1",
     "sonner": "^1.5.0",
-    "supports-color": "^9.4.0",
+    "supports-color": "^8.1.1",
+    "swiper": "^11.1.15",
     "swr": "^2.2.5",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",

@@ -87,6 +87,7 @@ export default function Sidebar({ show, setter }: sidebarProps) {
                         />
                     </Link>
                 </div>
+                
                 <div className="flex flex-col">
                     <MenuItem
                         name="Home"

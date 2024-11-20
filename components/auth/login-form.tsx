@@ -80,7 +80,6 @@ const LoginForm = () => {
             headerLabel="Welcome Back"
             backBtnLabel="Don't Have an account?"
             backBtnHref="/register"
-            showSocials
         >
             <Form {...form}>
                 <form

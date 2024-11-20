@@ -63,7 +63,7 @@ const RegisterForm = () => {
             headerLabel="Create an Account"
             backBtnLabel="Already Have an account?"
             backBtnHref="/login"
-            showSocials
+            // showSocials
         >
             <Form {...form}>
                 <form

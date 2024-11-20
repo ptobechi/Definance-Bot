@@ -24,37 +24,79 @@ const FAQ = () => {
 
                     {/* <!-- Right Section (FAQ Items) --> */}
                     <div className="space-y-6">
-                    <div>
-                        <h3 className="text-xl font-semibold text-primaryColor mb-2">How do you make holy water?</h3>
-                        <p className="text-gray-600 text-sm">
-                        You boil the hell out of it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.
-                        </p>
-                    </div>
+                        <div>
+                            <h3 className="text-sm font-semibold text-primaryColor mb-2">
+                            ⁠Do I need to have experience in trading to use an AI broker?
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                            No, one of the key advantages of an AI trading broker is that it can 
+                            cater to both novice and experienced traders.
+                            </p>
+                        </div>
 
-                    <div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">What's the best thing about Switzerland?</h3>
-                        <p className="text-gray-600 text-sm">
-                        I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.
-                        </p>
-                    </div>
+                        <div>
+                            <h3 className="text-sm font-semibold text-primaryColor mb-2">
+                            ⁠Is AI trading safe?
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                            Yes as the algorithms call accurate price levels for executions
+                            </p>
+                        </div>
 
-                    <div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">What do you call someone with no body and no nose?</h3>
-                        <p className="text-gray-600 text-sm">
-                        Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.
-                        </p>
-                    </div>
+                        <div>
+                            <h3 className="text-sm font-semibold text-primaryColor mb-2">
+                            How much capital do I need to start using an AI trading broker? 
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                            You can start with as little as $100
+                            </p>
+                        </div>
 
-                    <div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">Why do you never see elephants hiding in trees?</h3>
-                        <p className="text-gray-600 text-sm">
-                        Because they're so good at it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.
-                        </p>
-                    </div>
+                        <div>
+                            <h3 className="text-sm font-semibold text-primaryColor mb-2">
+                            Is AI trading better than traditional human trading?
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                            Yes, AI trading can offer advantages over traditional human trading, 
+                            such as faster decision-making, 24/7 market monitoring, and the ability 
+                            to analyze large datasets quickly.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 className="text-sm font-semibold text-primaryColor mb-2">
+                            ⁠Can I withdraw my profits at the end of each trading session
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                            Yes, you can withdraw as often as you want once your trading
+                            session is over. You are in total control of your assets.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 className="text-sm font-semibold text-primaryColor mb-2">
+                            ⁠Can investing with Definance give me over 1000% or more in profits 
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                            Yes, you can generate an unimaginable amount of profits, 
+                            and that is determined by your investment 
+                            capital and plan you subscribe to.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 className="text-sm font-semibold text-primaryColor mb-2">
+                            ⁠Can the Definance's AI make losses in trading?  
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                            Yes losses are inevitable, but we have strict risk management 
+                            techniques that outweighs the losses and always keeps you 
+                            99.9% profitable
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-
             <JoinUs/>
         </div>
     )

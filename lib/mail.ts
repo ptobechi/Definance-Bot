@@ -6,7 +6,7 @@ export const sendVerificationToken = async (
     email: string,
     token: any
 ) => {
-    const confirmationLink = `http://localhost:3000/verify-token?token=${token}`;
+    const confirmationLink = `https://defbots.ai/verify-token?token=${token}`;
 
     await resend.emails.send({
         from: 'Profile Authentication Project <onboarding@resend.dev>',
@@ -20,7 +20,7 @@ export const sendResetPassworLink = async (
     email: string,
     token: any
 ) => {
-    const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+    const resetLink = `https://defbots.ai/reset-password?token=${token}`;
 
     await resend.emails.send({
         from: 'Profile Authentication Project <onboarding@resend.dev>',
