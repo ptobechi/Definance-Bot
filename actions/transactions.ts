@@ -19,24 +19,18 @@ export const transaction = async (values: z.infer<typeof
         if (!validatedValues.success) return {error: "Invalid fileds!"}
 
         const {amount, from, to, type, network} = validatedValues.data;
-
-        // convert from amount to crypto value
-        const from_crypto_rate: any = await usd2crypto(from.toString(), amount);
-
-        // Convert crypto_bal to a number
-        const to_crypto_rate: any = await usd2crypto(to.toString(), amount);
+        console.log("symbol",network)
 
         if (!to && type === "deposit") {
             // generate payment address and return to user
             const allPaymentAddr = await db.paymentWalletAddress.findMany({
                 where: {
                     symbol: from,
-                    network
+                    // network
                 }
             })
 
             const random = Math.floor(Math.random() * allPaymentAddr.length);
-
             return {
                 paymentAddr: allPaymentAddr[random].publicAddress,
                 network: allPaymentAddr[random].network
@@ -44,6 +38,11 @@ export const transaction = async (values: z.infer<typeof
         }
 
         if (type === "convert") {
+            // convert from amount to crypto value
+            const from_crypto_rate: any = await usd2crypto(from.toString(), amount);
+
+            // Convert crypto_bal to a number
+            const to_crypto_rate: any = await usd2crypto(to.toString(), amount);
             // get from balance
             const portfolio = await getUserPortfolio(loggedUser.id)
 

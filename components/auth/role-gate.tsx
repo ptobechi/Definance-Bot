@@ -16,7 +16,8 @@ export const RoleGate = ({
 
     if (role !== allowedRole) {
         return (
-            <FormError message="You do not have permission to view this page"/>
+            <></>
+            // <FormError message="You do not have permission to view this page"/>
         )
     }
 

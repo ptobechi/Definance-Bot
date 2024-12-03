@@ -1,9 +1,6 @@
-"use client"
-const AdminPage = () => {
+const Page = () => {
     return (
-        <section>
-
-        </section>
+        <div>Welcome to the admin page</div>
     )
 }
-export default AdminPage;
+export default Page;

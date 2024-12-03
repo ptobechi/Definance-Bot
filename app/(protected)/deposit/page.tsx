@@ -51,6 +51,7 @@ const DepositPage = () => {
             startTransition(() => {
                 transaction(values)
                     .then((data) => {
+                        console.log(data)
                         if (data?.error) {
                             // set message
                             toast.error(data.error)

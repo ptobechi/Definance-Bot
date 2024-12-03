@@ -1,7 +1,6 @@
 "use server"
 
 import schema from "@/schema";
-import * as z from "zod";
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 

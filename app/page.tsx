@@ -1,4 +1,3 @@
-
 import Sponsors from '@/components/landing/sponsors'
 import HowWeWork from '@/components/landing/how-we-work'
 import AdvisorsCard from '@/components/landing/advisors-card'
@@ -67,6 +66,7 @@ const Home = () => {
       </div>
 
       <Sponsors/>
+
       <div className="lg:px-20 md:px-10">
         <HowWeWork/>
         <AdvisorsCard/>

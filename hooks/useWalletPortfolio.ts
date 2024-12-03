@@ -1,7 +1,7 @@
 "use client"
 
 import useSWR from "swr";
-import { useCurrentUser } from "./active-user-session";
+// import { useCurrentUser } from "./active-user-session";
 import { privateRequest } from "@/config";
 import { useEffect, useState } from "react";
 import { coinDetail } from "@/_functions";
@@ -21,7 +21,7 @@ interface CryptoPortfolio {
 // specific places that the transaction updates to fetch 
 // fresh data from the backend
 const useWalletPortfolio =  () => {
-    const loggedUser = useCurrentUser();
+    // const loggedUser = useCurrentUser();
     const [wallet, setWallet] = useState<CryptoPortfolio[]>([]);
     const [totalBalance, setTotalBalance] = useState(0)
 

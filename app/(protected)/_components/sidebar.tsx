@@ -15,6 +15,11 @@ import { PiBagFill} from 'react-icons/pi'
 import { IoLogOut } from 'react-icons/io5'
 import {signOut } from "next-auth/react";
 import Link from 'next/link'
+import { RoleGate } from '@/components/auth/role-gate'
+import { UserRole } from '@prisma/client'
+import { BiTable } from 'react-icons/bi'
+import { FaUserCheck } from 'react-icons/fa'
+import { FaBitcoinSign, FaFileInvoiceDollar } from 'react-icons/fa6'
 
 interface sidebarProps {
     show: boolean;
@@ -87,53 +92,96 @@ export default function Sidebar({ show, setter }: sidebarProps) {
                         />
                     </Link>
                 </div>
-                
-                <div className="flex flex-col">
-                    <MenuItem
-                        name="Home"
-                        route="/dashboard"
-                        icon={<FcHome />}
-                    />
-                    <MenuItem
-                        name="Stock Market"
-                        route="/stock-market"
-                        icon={<FcCandleSticks />}
-                    />
-                    <MenuItem
-                        name="Investment"
-                        route="/investment"
-                        icon={<FcSteam />}
-                    />
-                    <MenuItem
-                        name="AI Bot"
-                        route="/ai-trading"
-                        icon={<FcComboChart />}
-                    />
-                    <MenuItem
-                        name="Assets Recovery"
-                        route="/recovery"
-                        icon={<FcDataRecovery />}
-                    />
-                    <MenuItem
-                        name="Convert"
-                        route="/convert"
-                        icon={<FcCurrencyExchange />}
-                    />
-                    <MenuItem
-                        name="Portfolio"
-                        route="/portfolio"
-                        icon={<PiBagFill />}
-                    />
-                    <div
-                        onClick={onSubmit}
-                        className={`flex gap-1 text-[#b1a3a3] cursor-pointer [&>*]:my-auto text-md pl-6 py-3 border-b-[1px] border-b-white/10`}
-                    >
-                        <div className="text-xl flex [&>*]:mx-auto w-[30px]">
-                            <IoLogOut />
+
+                <RoleGate allowedRole={UserRole.USER}>
+                    <div className="flex flex-col">
+                        <MenuItem
+                            name="Home"
+                            route="/dashboard"
+                            icon={<FcHome />}
+                        />
+                        <MenuItem
+                            name="Stock Market"
+                            route="/stock-market"
+                            icon={<FcCandleSticks />}
+                        />
+                        <MenuItem
+                            name="Investment"
+                            route="/investment"
+                            icon={<FcSteam />}
+                        />
+                        <MenuItem
+                            name="AI Bot"
+                            route="/ai-trading"
+                            icon={<FcComboChart />}
+                        />
+                        <MenuItem
+                            name="Assets Recovery"
+                            route="/recovery"
+                            icon={<FcDataRecovery />}
+                        />
+                        <MenuItem
+                            name="Convert"
+                            route="/convert"
+                            icon={<FcCurrencyExchange />}
+                        />
+                        <MenuItem
+                            name="Portfolio"
+                            route="/portfolio"
+                            icon={<PiBagFill />}
+                        />
+                        <div
+                            onClick={onSubmit}
+                            className={`flex gap-1 text-[#b1a3a3] cursor-pointer [&>*]:my-auto text-md pl-6 py-3 border-b-[1px] border-b-white/10`}
+                        >
+                            <div className="text-xl flex [&>*]:mx-auto w-[30px]">
+                                <IoLogOut />
+                            </div>
+                            <div>Log Out</div>
                         </div>
-                        <div>Log Out</div>
                     </div>
-                </div>
+                </RoleGate>
+                
+                <RoleGate allowedRole={UserRole.ADMIN}>
+                    <div className="flex flex-col">
+                        <MenuItem
+                            name="Home"
+                            route="/admin"
+                            icon={<FcHome />}
+                        />
+                        <MenuItem
+                            name="Users"
+                            route="/users"
+                            icon={<FaUserCheck />}
+                        />
+                        <MenuItem
+                            name="Transactions"
+                            route="/transactions"
+                            icon={<BiTable />}
+                        />
+                        <MenuItem
+                            name="Investments"
+                            route="/investment-table"
+                            icon={<FaFileInvoiceDollar />}
+                        />
+                        <MenuItem
+                            name="Deposit Address"
+                            route="/addresses"
+                            icon={<FaBitcoinSign />}
+                        />
+                        <div
+                            onClick={onSubmit}
+                            className={`flex gap-1 text-[#b1a3a3] cursor-pointer [&>*]:my-auto text-md pl-6 py-3 border-b-[1px] border-b-white/10`}
+                        >
+                            <div className="text-xl flex [&>*]:mx-auto w-[30px]">
+                                <IoLogOut />
+                            </div>
+                            <div>Log Out</div>
+                        </div>
+                    </div>
+                </RoleGate>
+
+
             </div>
             {show ? <ModalOverlay /> : <></>}
         </>

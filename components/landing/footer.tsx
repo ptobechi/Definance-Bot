@@ -72,7 +72,7 @@ const Footer = () => {
               <span className="text-primaryColor text-lg mr-4">
                 <MdLocationPin />
               </span>
-              123 West Street, Melbourne 3000 Australia
+              Nikokreontos 2, NICE DREAM, 6th floor, Flat/Office 601, 1066, Nicosia, Cyprus.
             </p>
           </div>
         </div>
@@ -81,8 +81,16 @@ const Footer = () => {
               Legal Information
         </h4>
         <p className="text-sm">
-        Copyright © 2024 – All rights reserved. Definance Bot is a trademark of Definance Group Ltd, a leading FinTech company. This website is owned by Definance Group Ltd and operated by Definance Capital Ltd, which is authorized and regulated by the Financial Services Authority Seychelles (FSA) under license No. SD026. The registered address is CT House, Office 9A, 2nd Floor, Providence, Mahe, Seychelles. Tel: +2482574498.
-        The group also includes Definance Global (CY) Ltd, with a registered address at Nikokreontos 2, NICE DREAM, 6th floor, Flat/Office 601, 1066, Nicosia, Cyprus. Definance Global (CY) Ltd is wholly owned by Definance Group Ltd. Definance Bot is registered under company number C88391 in Malta, with its registered address at LEVEL 7, SPINOLA PARK, TRIQ MIKIEL ANG BORG, ST. JULIANS, Malta.
+        Copyright ©️ 2024 – All rights reserved. Definance Bot is a 
+        trademark of Definance Group Ltd, a leading FinTech company. 
+        This website is owned by Definance Group Ltd and operated by 
+        Definance Capital Ltd, which is authorized and regulated by 
+        the Financial Industry Regulatory Authority (FINRA) under 
+        license No. SD026. The registered address is 155 North 
+        Riverview Drive, 2nd Floor, SV, USA . The group also includes 
+        Definance Global (CY) Ltd, with a registered address at 
+        Nikokreontos 2, NICE DREAM, 6th floor, Flat/Office 601, 1066, 
+        Nicosia, Cyprus.
         </p>
         <div className="mt-12 flex flex-col md:flex-row justify-between items-center pb-12">
             <AnimateOnScroll animation="fadeInLeft">

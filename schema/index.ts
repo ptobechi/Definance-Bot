@@ -1,4 +1,4 @@
-import { optional, z } from "zod";
+import { optional, symbol, z } from "zod";
 
 /**
  * login form validation schema
@@ -73,10 +73,25 @@ const PortfolioSchema = z.object({
     userid: optional(z.string())
 })
 
+/**
+ * Payment Address form validation schema
+ */
+const PaymentAddressSchema = z.object({
+    address: z.string().min(1, {
+        message: "Address is required"
+    }),
+    name: z.string(),
+    symbol: z.string({
+        message: "Symbol is required"
+    }),
+    network: z.string()
+})
+
 export default {
     LoginSchema,
     RegisterSchema,
     ResetSchema,
     PaymentSchema,
     PortfolioSchema,
+    PaymentAddressSchema,
 }

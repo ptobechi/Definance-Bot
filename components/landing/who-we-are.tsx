@@ -3,7 +3,7 @@ import Image from "next/image";
 const WhoWeAre = () => {
     return (
         <>
-        <section className="p-4 lg:max-w-screen-xxl lg:mx-auto mt-12 flex flex-col lg:flex-row">
+        <section id="about" className="p-4 lg:max-w-screen-xxl lg:mx-auto mt-12 flex flex-col lg:flex-row">
             <div className="relative lg:w-1/2 mb-5 lg:my-auto">
                 <Image
                     className="object-cover rounded-md"

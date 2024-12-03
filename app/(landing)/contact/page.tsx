@@ -23,14 +23,7 @@ const Contact = () => {
                     <div className="flex items-start">
                         <MdLocationPin className="text-primaryColor text-2xl mr-4" />
                         <div>
-                        545 Mavis Island<br />
-                        Chicago, IL 99191
-                        </div>
-                    </div>
-                    <div className="flex items-start">
-                        <IoTime className="text-primaryColor text-2xl mr-4" />
-                        <div>
-                        +1 (555) 234-5678
+                        Nikokreontos 2, NICE DREAM, 6th floor, Flat/Office 601, 1066, Nicosia, Cyprus.
                         </div>
                     </div>
                     <div className="flex items-start">
