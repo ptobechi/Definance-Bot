@@ -2,7 +2,7 @@
 
 import React, { Dispatch, SetStateAction } from 'react'
 import logo from '@/img/logo.svg'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
     FcCandleSticks,
     FcComboChart,
@@ -33,9 +33,11 @@ interface menuProps {
 }
 export default function Sidebar({ show, setter }: sidebarProps) {
     const router = usePathname();
+    const navigate = useRouter();
 
     const onSubmit = () => {
         signOut()
+        navigate.push("/")
     }
 
     // Define our base class
