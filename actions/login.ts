@@ -13,7 +13,8 @@ import * as z from "zod";
 
 
 export const login = async (values: z.infer<typeof
-    Schemas.LoginSchema>) => {
+    Schemas.LoginSchema>,
+    callBackurl?: string | null) => {
     const validatedValues = Schemas.LoginSchema.safeParse(values);
 
     if (!validatedValues.success)
@@ -84,7 +85,7 @@ export const login = async (values: z.infer<typeof
         await signIn("credentials", {
             email,
             password,
-            redirectTo: existingUser.role === "ADMIN" ? DEFAULT_ADMIN_REDIRECT : DEFAULT_LOGIN_REDIRECT
+            redirectTo: callBackurl || existingUser.role === "ADMIN" ? DEFAULT_ADMIN_REDIRECT : DEFAULT_LOGIN_REDIRECT
         })
 
     } catch (error) {

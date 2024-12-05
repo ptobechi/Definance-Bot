@@ -10,6 +10,7 @@ export const publicRoutes = [
     '/contact',
     '/faq',
     '/error',
+    
 ]
 
 /**
@@ -23,6 +24,7 @@ export const authRoutes = [
     '/verify-token',
     '/forgot-password',
     '/reset-password',
+    
 ]
 
 /**

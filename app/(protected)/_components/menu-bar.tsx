@@ -15,12 +15,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from '@/components/ui/button'
 import { useCurrentUser } from '@/hooks/active-user-session'
-import {signOut } from "next-auth/react";
+import { logOut } from '@/actions/logout'
 
 
 export default function MenuBarMobile({ setter }: any) {
     const onSubmit = () => {
-        signOut()
+        logOut()
     }
 
     const user = useCurrentUser();

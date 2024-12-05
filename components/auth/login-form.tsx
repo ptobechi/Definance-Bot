@@ -46,6 +46,7 @@ const LoginForm = () => {
     const [twoFactorEnabled, setTwoFactorEnabled] = useState(false)
 
     const searchParams = useSearchParams();
+    const callBackurl = searchParams.get('callback')
     const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
         ? "User Already Exists!"
         : ""
@@ -58,7 +59,7 @@ const LoginForm = () => {
         setSuccess("");
         
         startTransition(() => {
-            login(values)
+            login(values, callBackurl)
                 .then((data) => {
                     if (data?.error) {
                         form.reset()

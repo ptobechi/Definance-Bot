@@ -2,7 +2,7 @@
 
 import React, { Dispatch, SetStateAction } from 'react'
 import logo from '@/img/logo.svg'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import {
     FcCandleSticks,
     FcComboChart,
@@ -13,13 +13,13 @@ import {
 } from 'react-icons/fc'
 import { PiBagFill} from 'react-icons/pi'
 import { IoLogOut } from 'react-icons/io5'
-import {signOut } from "next-auth/react";
 import Link from 'next/link'
 import { RoleGate } from '@/components/auth/role-gate'
 import { UserRole } from '@prisma/client'
 import { BiTable } from 'react-icons/bi'
 import { FaUserCheck } from 'react-icons/fa'
 import { FaBitcoinSign, FaFileInvoiceDollar } from 'react-icons/fa6'
+import { logOut } from '@/actions/logout'
 
 interface sidebarProps {
     show: boolean;
@@ -33,11 +33,9 @@ interface menuProps {
 }
 export default function Sidebar({ show, setter }: sidebarProps) {
     const router = usePathname();
-    const navigate = useRouter();
 
     const onSubmit = () => {
-        signOut()
-        navigate.push("/")
+        logOut()
     }
 
     // Define our base class
