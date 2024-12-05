@@ -39,6 +39,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import useAllUser from "@/hooks/all-users"
+import { useCurrentRole } from "@/hooks/use-current-role"
+import { useRouter } from "next/navigation"
 
 
 type User = {
@@ -137,6 +139,15 @@ const columns: ColumnDef<User>[] = [
 ]
 
 export default function DataTableDemo() {
+    const role = useCurrentRole();
+    const navigate = useRouter();
+
+    React.useEffect(() => {
+        if (role !== "ADMIN") {
+            navigate.back(); // Redirects the user to the previous page
+        }
+    }, [role, navigate]);
+
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []

@@ -6,7 +6,7 @@ import { getTwoFactorConfirmationByUserId, getTwoFactorTokenByEmail } from "@/da
 import { db } from "@/lib/db";
 import { sendTwoFactorTokenEmail, sendVerificationToken } from "@/lib/mail";
 import { generateTwoFactorToken, generateVerificationToken } from "@/lib/tokens";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { DEFAULT_ADMIN_REDIRECT, DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import Schemas from "@/schema";
 import { AuthError } from "next-auth";
 import * as z from "zod";
@@ -84,7 +84,7 @@ export const login = async (values: z.infer<typeof
         await signIn("credentials", {
             email,
             password,
-            redirectTo: DEFAULT_LOGIN_REDIRECT
+            redirectTo: existingUser.role === "ADMIN" ? DEFAULT_ADMIN_REDIRECT : DEFAULT_LOGIN_REDIRECT
         })
 
     } catch (error) {

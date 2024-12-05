@@ -23,14 +23,25 @@ import {
 import schema from "@/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CopyIcon } from "@radix-ui/react-icons"
-import {useState, useTransition } from "react"
+import {useEffect, useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import QRCode from "react-qr-code";
 import { transaction } from "@/actions/transactions"
 import { toast } from "sonner"
+import { useCurrentRole } from "@/hooks/use-current-role"
+import { useRouter } from "next/navigation"
 
 const DepositPage = () => {
+    const role = useCurrentRole();
+    const navigate = useRouter();
+
+    useEffect(() => {
+        if (role !== "USER") {
+            navigate.back(); // Redirects the user to the previous page
+        }
+    }, [role, navigate]);
+
     const [isPending, startTransition] = useTransition()
     const [completePayment, setCompletePayment] = useState(false)
     // const [paymentAddr, setPaymentAddr] = useState<string | undefined>()

@@ -1,12 +1,23 @@
 "use client"
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import DashHeader from "../_components/dash-header";
 import WalletPortfolio from "../_components/wallet";
 import useWalletPortfolio from "@/hooks/useWalletPortfolio";
 import { formatToUSD } from "@/_functions";
+import { useCurrentRole } from "@/hooks/use-current-role";
+import { useRouter } from "next/navigation";
 
 
 const Dashbaord = () => {
+    const role = useCurrentRole();
+    const navigate = useRouter();
+
+    useEffect(() => {
+        if (role !== "USER") {
+            navigate.back(); // Redirects the user to the previous page
+        }
+    }, [role, navigate]);
+
     const {totalBalance} = useWalletPortfolio();
 
     return (
