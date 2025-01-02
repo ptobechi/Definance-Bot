@@ -21,9 +21,13 @@ import { useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
 
-const LoginForm = () => {
+
+const AdminLoginForm = () => {
+    /**
+     * declares a form properties that uses zodResolver to handle
+     * form inputs based on the loginSchema rules
+     */
     const form = useForm<z.infer<typeof Schemas.LoginSchema>>({
         resolver: zodResolver(Schemas.LoginSchema),
         defaultValues: {
@@ -31,42 +35,46 @@ const LoginForm = () => {
             password:"",
             code: ""
         }
-    });
+    })
 
-    const [isPending, startTransition] = useTransition();
-    const [error, setError] = useState<string | undefined>("");
-    const [success, setSuccess] = useState<string | undefined>("");
-    const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
+    /**
+     * built in state transition function to monitor form submit states
+     */
+    const [isPending, startTransition] = useTransition()
+    const [error, setError] = useState<string | undefined>("")
+    const [success, setSuccess] = useState<string | undefined>("")
+    const [twoFactorEnabled, setTwoFactorEnabled] = useState(false)
 
     const searchParams = useSearchParams();
-    const callBackurl = searchParams.get('callback');
+    const callBackurl = searchParams.get('callback')
     const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
         ? "User Already Exists!"
-        : "";
+        : ""
 
+    /**
+     * submit form values to the server
+     */
     const onSubmit = (values: z.infer<typeof Schemas.LoginSchema>) => {
         setError("");
         setSuccess("");
-
+        
         startTransition(() => {
             login(values, callBackurl)
                 .then((data) => {
                     if (data?.error) {
-                        form.reset();
-                        setError(data.error);
+                        form.reset()
+                        setError(data.error)
                     }
 
                     if (data?.success) {
-                        form.reset();
-                        setSuccess(data.success);
+                        form.reset()
+                        setSuccess(data.success)
                     }
 
-                    if (data?.twoFactorEnabled) setTwoFactorEnabled(true);
-                });
+                    if (data?.twoFactorEnabled) setTwoFactorEnabled(true)
+                })
         });
-    };
-
+    }
     return (
         <CardWrapper
             headerLabel="Welcome Back"
@@ -104,27 +112,14 @@ const LoginForm = () => {
                             render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
-                                        <FormControl className="relative">
-                                            <div>
-                                                <Input
-                                                    {...field}
-                                                    placeholder="*******"
-                                                    type={showPassword ? "text" : "password"}
-                                                    disabled={isPending}
-                                                />
-                                                <button
-                                                    type="button"
-                                                    className="absolute inset-y-0 right-3 flex items-center text-gray-500"
-                                                    onClick={() => setShowPassword(!showPassword)}
-                                                >
-                                                    {showPassword ? (
-                                                        <EyeOffIcon className="h-5 w-5" />
-                                                    ) : (
-                                                        <EyeIcon className="h-5 w-5" />
-                                                    )}
-                                                </button>
-                                            </div>
-                                        </FormControl>
+                                    <FormControl>
+                                        <Input
+                                         {...field}
+                                         placeholder="*******"
+                                         type="password"
+                                         disabled={isPending}
+                                        />
+                                    </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -175,7 +170,6 @@ const LoginForm = () => {
                 </form>
             </Form>
         </CardWrapper>
-    );
-};
-
-export default LoginForm;
+    )
+}
+export default AdminLoginForm;

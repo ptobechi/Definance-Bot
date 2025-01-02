@@ -14,7 +14,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import {
-  ArrowUpDown,
   ChevronDown,
   MoreHorizontal
 } from "lucide-react"
@@ -41,14 +40,18 @@ import {
 import useAllUser from "@/hooks/all-users"
 import { useCurrentRole } from "@/hooks/use-current-role"
 import { useRouter } from "next/navigation"
-
+import Swal from "sweetalert2"
 
 type User = {
   id: string
   name: string
-  email: string
-  password: string
-  status: "pending" | "processing" | "success" | "failed" | "active"
+  iname: string
+  sector: string
+  amount: string
+  roi: string
+  open_date: string
+  closing_date: string
+  // status: "pending" | "processing" | "success" | "failed"
 }
 
 const columns: ColumnDef<User>[] = [
@@ -82,29 +85,54 @@ const columns: ColumnDef<User>[] = [
     ),
   },
   {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown />
-        </Button>
-      )
+    accessorKey: "iname",
+    header: "Invesment",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("iname")}</div>
+    ),
+  },
+  {
+    accessorKey: "sector",
+    header: "Sector",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("sector")}</div>
+    ),
+  },
+  {
+    accessorKey: "amount",
+    header: () => <div className="text-right">Amount</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("amount"))
+
+      // Format the amount as a dollar amount
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(amount)
+
+      return <div className="text-right font-medium">{formatted}</div>
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
-    accessorKey: "password",
-    header: "Password",
-    cell: ({ row }) => <div className="lowercase">{row.getValue("password")}</div>,
+    accessorKey: "roi",
+    header: "ROI",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("roi")+"%"}</div>
+    ),
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div className="lowercase">{row.getValue("status")}</div>,
+    accessorKey: "open_date",
+    header: "Open Date",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("open_date")}</div>
+    ),
+  },
+  {
+    accessorKey: "closing_date",
+    header: "Closing Date",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("closing_date")}</div>
+    ),
   },
   {
     id: "actions",
@@ -128,15 +156,36 @@ const columns: ColumnDef<User>[] = [
               Copy user ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View user details</DropdownMenuItem>
             <DropdownMenuItem>Disable</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={Delete}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
     },
   },
 ]
+
+
+const Delete = () => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your file has been deleted.",
+        icon: "success"
+      });
+    }
+  });
+}
+
 
 export default function DataTableDemo() {
     const role = useCurrentRole();
@@ -147,7 +196,6 @@ export default function DataTableDemo() {
             navigate.back(); // Redirects the user to the previous page
         }
     }, [role, navigate]);
-
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -161,15 +209,25 @@ export default function DataTableDemo() {
   const [data, setData] = React.useState<User[]>([])
   React.useEffect(() => {
     if (allUsers) {
-      // Transform allUsers into User[] and update state
-      const users: User[] = allUsers.map((user) => ({
-        id: user.id || "N/A", // Default value if id is not present
-        name: user.name || "Unknown",
-        email: user.email || "No email",
-        password: user.password || "No password",
-        status: user.emailVerified ? "active" : "pending",
-      }));
+      // Collect transactions into a single array of User objects
+      const users: User[] = allUsers.flatMap((user) => {
+        if (user.userPortfolio?.length > 0) {
+          return user.userPortfolio.map((transaction) => ({
+            id: transaction.userid || user.id,
+            name: user.name || "N/A",
+            iname: transaction.name || "N/A",
+            sector: transaction.sector,
+            amount: transaction.amount || "N/A",
+            roi: transaction.roi || "N/A",
+            open_date: transaction.opened_date || "N/A",
+            // closing_date: transaction.close_date ? "success" : "pending"
+            closing_date: transaction.close_date
+          }));
+        }
+        return [];
+      });
   
+      // Update state with collected users
       setData(users);
     }
   }, [allUsers]);
@@ -199,9 +257,9 @@ export default function DataTableDemo() {
       <div className="flex items-center py-4">
         <Input
           placeholder="Search..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

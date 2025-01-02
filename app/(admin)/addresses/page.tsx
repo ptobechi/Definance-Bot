@@ -55,8 +55,6 @@ import { uploadWalletAddress } from "@/actions/upload-address"
 import FormError from "@/components/form-error"
 import FormSucces from "@/components/form-success"
 import useAllPaymentAddress from "@/hooks/all-wallet"
-import { useCurrentRole } from "@/hooks/use-current-role"
-import { useRouter } from "next/navigation"
 
 type Address = {
   id: string
@@ -144,15 +142,6 @@ const columns: ColumnDef<Address>[] = [
 ]
 
 export default function DataTableDemo() {
-    const role = useCurrentRole();
-    const navigate = useRouter();
-
-    React.useEffect(() => {
-        if (role !== "ADMIN") {
-            navigate.back(); // Redirects the user to the previous page
-        }
-    }, [role, navigate]);
-
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []

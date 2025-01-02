@@ -38,14 +38,16 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import useAllUser from "@/hooks/all-users"
-import { useCurrentRole } from "@/hooks/use-current-role"
-import { useRouter } from "next/navigation"
+import Swal from "sweetalert2"
+
 
 type User = {
   id: string
   name: string
   amount: string
   date: string
+  type: string
+  info: string
   status: "pending" | "processing" | "success" | "failed"
 }
 
@@ -71,6 +73,20 @@ const columns: ColumnDef<User>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
+  },
+  {
+    accessorKey: "type",
+    header: "Type",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("type")}</div>
+    ),
+  },
+  {
+    accessorKey: "info",
+    header: "Currency - Address",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("info")}</div>
+    ),
   },
   {
     accessorKey: "name",
@@ -117,15 +133,12 @@ const columns: ColumnDef<User>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(user.id)}
-            >
-              Copy user ID
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View user details</DropdownMenuItem>
-            <DropdownMenuItem>Disable</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem>Accept</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Reject</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={Delete}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -133,15 +146,30 @@ const columns: ColumnDef<User>[] = [
   },
 ]
 
-export default function DataTableDemo() {
-    const role = useCurrentRole();
-    const navigate = useRouter();
+const Delete = () => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your file has been deleted.",
+        icon: "success"
+      });
+    }
+  });
+}
 
-    React.useEffect(() => {
-        if (role !== "ADMIN") {
-            navigate.back(); // Redirects the user to the previous page
-        }
-    }, [role, navigate]);
+
+
+export default function DataTableDemo() {
+
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -163,6 +191,8 @@ export default function DataTableDemo() {
             name: user.name || "N/A",
             amount: transaction.transaction_amount || "N/A",
             date: transaction.transaction_date || "N/A",
+            type: transaction.transaction_type || "N/A",
+            info: transaction.transaction_info || "N/A",
             status: transaction.transaction_status ? "success" : "pending"
           }));
         }

@@ -4,16 +4,13 @@ import React, { Dispatch, SetStateAction } from 'react'
 import logo from '@/img/logo.svg'
 import { usePathname } from 'next/navigation'
 import {
-    FcCandleSticks,
-    FcComboChart,
-    FcCurrencyExchange,
-    FcDataRecovery,
     FcHome,
-    FcSteam,
 } from 'react-icons/fc'
-import { PiBagFill} from 'react-icons/pi'
 import { IoLogOut } from 'react-icons/io5'
 import Link from 'next/link'
+import { BiTable } from 'react-icons/bi'
+import { FaUserCheck } from 'react-icons/fa'
+import { FaBitcoinSign, FaFileInvoiceDollar } from 'react-icons/fa6'
 import { logOut } from '@/actions/logout'
 
 interface sidebarProps {
@@ -87,52 +84,41 @@ export default function Sidebar({ show, setter }: sidebarProps) {
                         />
                     </Link>
                 </div>
-
                 <div className="flex flex-col">
-                        <MenuItem
-                            name="Home"
-                            route="/dashboard"
-                            icon={<FcHome />}
-                        />
-                        <MenuItem
-                            name="Stock Market"
-                            route="/stock-market"
-                            icon={<FcCandleSticks />}
-                        />
-                        <MenuItem
-                            name="Investment"
-                            route="/investment"
-                            icon={<FcSteam />}
-                        />
-                        <MenuItem
-                            name="AI Bot"
-                            route="/ai-trading"
-                            icon={<FcComboChart />}
-                        />
-                        <MenuItem
-                            name="Assets Recovery"
-                            route="/recovery"
-                            icon={<FcDataRecovery />}
-                        />
-                        <MenuItem
-                            name="Convert"
-                            route="/convert"
-                            icon={<FcCurrencyExchange />}
-                        />
-                        <MenuItem
-                            name="Portfolio"
-                            route="/portfolio"
-                            icon={<PiBagFill />}
-                        />
-                        <div
-                            onClick={onSubmit}
-                            className={`flex gap-1 text-[#b1a3a3] cursor-pointer [&>*]:my-auto text-md pl-6 py-3 border-b-[1px] border-b-white/10`}
-                        >
-                            <div className="text-xl flex [&>*]:mx-auto w-[30px]">
-                                <IoLogOut />
-                            </div>
-                            <div>Log Out</div>
+                    <MenuItem
+                        name="Home"
+                        route="/admin"
+                        icon={<FcHome />}
+                    />
+                    <MenuItem
+                        name="Users"
+                        route="/users"
+                        icon={<FaUserCheck />}
+                    />
+                    <MenuItem
+                        name="Transactions"
+                        route="/transactions"
+                        icon={<BiTable />}
+                    />
+                    <MenuItem
+                        name="Investments"
+                        route="/investment-table"
+                        icon={<FaFileInvoiceDollar />}
+                    />
+                    <MenuItem
+                        name="Deposit Address"
+                        route="/addresses"
+                        icon={<FaBitcoinSign />}
+                    />
+                    <div
+                        onClick={onSubmit}
+                        className={`flex gap-1 text-[#b1a3a3] cursor-pointer [&>*]:my-auto text-md pl-6 py-3 border-b-[1px] border-b-white/10`}
+                    >
+                        <div className="text-xl flex [&>*]:mx-auto w-[30px]">
+                            <IoLogOut />
                         </div>
+                        <div>Log Out</div>
+                    </div>
                 </div>
             </div>
             {show ? <ModalOverlay /> : <></>}

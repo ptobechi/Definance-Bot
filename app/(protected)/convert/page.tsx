@@ -20,10 +20,8 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select"
-import { useCurrentRole } from "@/hooks/use-current-role"
 import schema from "@/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/navigation"
 import {
     useEffect,
     useState,
@@ -34,14 +32,6 @@ import { toast } from "sonner"
 import * as z from "zod"
 
 const ConvertPage = () => {
-    const role = useCurrentRole();
-    const navigate = useRouter();
-
-    useEffect(() => {
-        if (role !== "USER") {
-            navigate.back(); // Redirects the user to the previous page
-        }
-    }, [role, navigate]);
 
     const [isPending, startTransition] = useTransition()
     const [completePayment, setCompletePayment] = useState(false)

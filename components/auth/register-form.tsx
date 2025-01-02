@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
 
 const RegisterForm = () => {
     /**
@@ -38,7 +39,7 @@ const RegisterForm = () => {
      * built in state transition function to monitor form submit states
      */
     const [isPending, startTransition] = useTransition()
-
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState<string | undefined>("")
     const [success, setSuccess] = useState<string | undefined>("")
 
@@ -115,14 +116,27 @@ const RegisterForm = () => {
                             render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                         {...field}
-                                         placeholder="*******"
-                                         type="password"
-                                         disabled={isPending}
-                                        />
-                                    </FormControl>
+                                        <FormControl className="relative">
+                                            <div>
+                                                <Input
+                                                    {...field}
+                                                    placeholder="*******"
+                                                    type={showPassword ? "text" : "password"}
+                                                    disabled={isPending}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                >
+                                                    {showPassword ? (
+                                                        <EyeOffIcon className="h-5 w-5" />
+                                                    ) : (
+                                                        <EyeIcon className="h-5 w-5" />
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}

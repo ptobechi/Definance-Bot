@@ -9,7 +9,7 @@ export const sendVerificationToken = async (
     const confirmationLink = `https://defbots.ai/verify-token?token=${token}`;
 
     await resend.emails.send({
-        from: 'Profile Authentication Project <onboarding@resend.dev>',
+        from: 'Profile Authentication Project <onboarding@defbots.ai>',
         to: email,
         subject: 'Email Confirmation',
         html: `<p>Verify email by clicking <a href=${confirmationLink}>Here</a></p>`,
@@ -23,7 +23,7 @@ export const sendResetPassworLink = async (
     const resetLink = `https://defbots.ai/reset-password?token=${token}`;
 
     await resend.emails.send({
-        from: 'Profile Authentication Project <onboarding@resend.dev>',
+        from: 'Profile Authentication Project <onboarding@defbots.ai>',
         to: email,
         subject: 'Reset Your Password',
         html: `<p>Reset your password by clicking <a href=${resetLink}>Here</a></p>`,
@@ -36,7 +36,7 @@ export const sendTwoFactorTokenEmail = async (
 ) => {
 
     await resend.emails.send({
-        from: 'Profile Authentication Project <onboarding@resend.dev>',
+        from: 'Profile Authentication Project <onboarding@defbots.ai>',
         to: email,
         subject: '2FA Confirmation Token',
         html: `<p>Your 2FA code: ${token}</p>`,

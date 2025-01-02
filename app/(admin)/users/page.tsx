@@ -14,6 +14,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import {
+  ArrowUpDown,
   ChevronDown,
   MoreHorizontal
 } from "lucide-react"
@@ -38,15 +39,16 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import useAllUser from "@/hooks/all-users"
-import { useCurrentRole } from "@/hooks/use-current-role"
-import { useRouter } from "next/navigation"
+import Link from "next/link"
+import Swal from 'sweetalert2'
+
 
 type User = {
   id: string
   name: string
-  amount: string
-  date: string
-  status: "pending" | "processing" | "success" | "failed"
+  email: string
+  password: string
+  status: "pending" | "processing" | "success" | "failed" | "active"
 }
 
 const columns: ColumnDef<User>[] = [
@@ -80,26 +82,29 @@ const columns: ColumnDef<User>[] = [
     ),
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount)
-
-      return <div className="text-right font-medium">{formatted}</div>
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown />
+        </Button>
+      )
     },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
-    accessorKey: "date",
-    header: "Date",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("date")}</div>
-    ),
+    accessorKey: "password",
+    header: "Password",
+    cell: ({ row }) => <div className="lowercase">{row.getValue("password")}</div>,
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => <div className="lowercase">{row.getValue("status")}</div>,
   },
   {
     id: "actions",
@@ -118,14 +123,20 @@ const columns: ColumnDef<User>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(user.id)}
+              onClick={() => copyUserID(user.id)}
             >
-              Copy user ID
+              Copy User ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View user details</DropdownMenuItem>
-            <DropdownMenuItem>Disable</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={'/users/'+user.id}>
+                View user details
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={DeleteUser}>
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -133,15 +144,32 @@ const columns: ColumnDef<User>[] = [
   },
 ]
 
-export default function DataTableDemo() {
-    const role = useCurrentRole();
-    const navigate = useRouter();
+const copyUserID = (id: string) => {
+  navigator.clipboard.writeText(id)
+  alert('copied')
+}
 
-    React.useEffect(() => {
-        if (role !== "ADMIN") {
-            navigate.back(); // Redirects the user to the previous page
-        }
-    }, [role, navigate]);
+const DeleteUser = () => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your file has been deleted.",
+        icon: "success"
+      });
+    }
+  });
+}
+
+export default function DataTableDemo() {
 
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -156,21 +184,15 @@ export default function DataTableDemo() {
   const [data, setData] = React.useState<User[]>([])
   React.useEffect(() => {
     if (allUsers) {
-      // Collect transactions into a single array of User objects
-      const users: User[] = allUsers.flatMap((user) => {
-        if (user.transactions?.length > 0) {
-          return user.transactions.map((transaction) => ({
-            id: transaction.userid || user.id,
-            name: user.name || "N/A",
-            amount: transaction.transaction_amount || "N/A",
-            date: transaction.transaction_date || "N/A",
-            status: transaction.transaction_status ? "success" : "pending"
-          }));
-        }
-        return [];
-      });
+      // Transform allUsers into User[] and update state
+      const users: User[] = allUsers.map((user) => ({
+        id: user.id || "N/A", // Default value if id is not present
+        name: user.name || "Unknown",
+        email: user.email || "No email",
+        password: user.password || "No password",
+        status: user.emailVerified ? "active" : "pending",
+      }));
   
-      // Update state with collected users
       setData(users);
     }
   }, [allUsers]);
@@ -200,9 +222,9 @@ export default function DataTableDemo() {
       <div className="flex items-center py-4">
         <Input
           placeholder="Search..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("email")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

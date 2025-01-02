@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DashHeader from "../_components/dash-header";
 import {
     Card,
@@ -31,18 +31,8 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useCurrentRole } from "@/hooks/use-current-role";
-import { useRouter } from "next/navigation";
 
 const Page = () => {
-    const role = useCurrentRole();
-    const navigate = useRouter();
-
-    useEffect(() => {
-        if (role !== "USER") {
-            navigate.back(); // Redirects the user to the previous page
-        }
-    }, [role, navigate]);
 
     const [step, setStep] = useState(0);
 
