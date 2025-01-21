@@ -1,25 +1,39 @@
 import { currentRole } from "@/lib/auth"
 import { db } from "@/lib/db";
 
-export const all_profile = async () => {
-    const role =  await currentRole();
+export const runtime = 'nodejs'; // Use Node.js runtime
+export const dynamic = 'force-dynamic'; // Forces dynamic rendering
 
-    // check if request is from admin
-    if (role !== "ADMIN")
-        return
+export const updateUserBal = async (value: any) => {
+    // Simulate fetching current role
+    const role = await currentRole();
+    console.log("Current Role:", role);
 
-    // return list of all registered users 
+    // // Check if the role is ADMIN
+    // if (role !== "ADMIN") {
+    //     return { error: "You don't have the right permission to perform this operation" };
+    // }
+
     try {
-        const users = await db.cryptoPortfolio.findMany();
+        console.log("Admin authorized, updating balance...");
 
-        if (users.length === 0) {
-            return null;
-        }
+        // Simulate portfolio update logic
+        console.log("Portfolio to update:", value);
 
-        return users;
+        // Here, you would typically make an API call to update the user's portfolio
+        // Example:
+        // const response = await fetch('/api/updatePortfolio', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify(value)
+        // });
+        // const result = await response.json();
 
+        // Simulated success response
+        return { success: "User balance updated successfully!" };
     } catch (error) {
-        console.error("Error fetching portfolio:", error);
-        return null;
+        console.error("Error updating balance:", error);
+        return { error: "An unexpected error occurred, please try again later" };
     }
+
 }

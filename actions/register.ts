@@ -63,6 +63,7 @@ export const register = async (values: z.infer<typeof
 
         await sendVerificationToken(
             email,
+            name,
             verificationToken.token
         )
 

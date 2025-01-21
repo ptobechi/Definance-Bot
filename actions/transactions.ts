@@ -6,6 +6,7 @@ import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { getUserPortfolio } from "@/data/user";
 import { usd2crypto } from "@/_functions";
+import { sendDepositInitiatedMessage } from "@/lib/mail";
 
 
 export const transaction = async (values: z.infer<typeof
@@ -121,8 +122,12 @@ export const transaction = async (values: z.infer<typeof
                 transaction_amount: amount,
                 transaction_date: new Date(),
                 transaction_status: "pending",
-                transaction_info: `${amount}, ${type} from: ${from} - to: ${to}`
+                transaction_info: `${from} - ${to}`
             }
         })
+
+        if (type === "deposit" && loggedUser.email) {
+            sendDepositInitiatedMessage(loggedUser.email, amount, "USD")
+        }
         return {success: "Your transaction is being proceed on the blockchain"}
 }

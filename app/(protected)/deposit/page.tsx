@@ -23,7 +23,7 @@ import {
 import schema from "@/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CopyIcon } from "@radix-ui/react-icons"
-import {useEffect, useState, useTransition } from "react"
+import {useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import QRCode from "react-qr-code";
@@ -136,7 +136,7 @@ const DepositPage = () => {
                                         <QRCode
                                             size={256}
                                             style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                                            value="hello"
+                                            value={form.getValues("to")}
                                             viewBox={`0 0 256 256`}
                                         />
                                 </div>

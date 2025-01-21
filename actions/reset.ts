@@ -1,7 +1,7 @@
 "use server"
 
 import { getUserEmail } from "@/data/user";
-import { sendResetPassworLink } from "@/lib/mail";
+import { sendResetPasswordLink } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/tokens";
 import schema from "@/schema"
 import * as z from "zod"
@@ -21,8 +21,11 @@ export const reset = async (values: z.infer<typeof
 
     const token = generateVerificationToken(email);
 
-    await sendResetPassworLink(email, token)
-
+    if (existingUser.name)
+        await sendResetPasswordLink(email, existingUser.name, token)
+    else
+        await sendResetPasswordLink(email, email, token)
+        
     return {success: "Verification link sent"}
 
 }

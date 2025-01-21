@@ -17,7 +17,6 @@ import {
   MoreHorizontal
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,6 +36,7 @@ import {
 import { FaPlus } from "react-icons/fa6"
 import {
     AlertDialog,
+    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogTitle,
     AlertDialogTrigger,
@@ -55,6 +55,9 @@ import { uploadWalletAddress } from "@/actions/upload-address"
 import FormError from "@/components/form-error"
 import FormSucces from "@/components/form-success"
 import useAllPaymentAddress from "@/hooks/all-wallet"
+import Swal from "sweetalert2"
+import { privateRequest } from "@/config"
+import { toast } from "sonner"
 
 type Address = {
   id: string
@@ -64,83 +67,6 @@ type Address = {
   address: string
 }
 
-const columns: ColumnDef<Address>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("name")}</div>
-    ),
-  },
-  {
-    accessorKey: "network",
-    header: "Network",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("network")}</div>
-    ),
-  },
-  {
-    accessorKey: "symbol",
-    header: "Symbol",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("symbol")}</div>
-    ),
-  },
-  {
-    accessorKey: "address",
-    header: "Address",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("address")}</div>
-    ),
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const user = row.original
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem 
-            onClick={() => navigator.clipboard.writeText(user.id)}
-            >Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
-]
-
 export default function DataTableDemo() {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -149,7 +75,6 @@ export default function DataTableDemo() {
     const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
-
     const {data: allAddress, isLoading} = useAllPaymentAddress();
     const [data, setData] = React.useState<Address[]>([]);
     React.useEffect(() => {
@@ -165,6 +90,97 @@ export default function DataTableDemo() {
         setData(addresses);
       }
     }, [allAddress]);
+
+    const columns: ColumnDef<Address>[] = [
+      {
+        accessorKey: "name",
+        header: "Name",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("name")}</div>
+        ),
+      },
+      {
+        accessorKey: "network",
+        header: "Network",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("network")}</div>
+        ),
+      },
+      {
+        accessorKey: "symbol",
+        header: "Symbol",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("symbol")}</div>
+        ),
+      },
+      {
+        accessorKey: "address",
+        header: "Address",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("address")}</div>
+        ),
+      },
+      {
+        id: "actions",
+        enableHiding: false,
+        cell: ({ row }) => {
+          const user = row.original
+    
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem onClick={() => Delete({id:user.id})}>
+                  Delete
+                  {
+                  isPending && "ing"}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )
+        },
+      },
+    ]
+
+    const Delete = async (value: any) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+              startTransition(() => {
+                  privateRequest
+                    .delete(`/delete-wallet?id=${value.id}`)
+                    .then((data) => {
+                        if (data.status === 200) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your transaction has been deleted.",
+                                icon: "success",
+                            });
+                            toast.success("Transaction deleted successfully");
+                        }
+                    })
+                    .catch((error) => {
+                        toast.error(
+                            error.error || "Unable to delete transaction at this time, please try again later"
+                        );
+                    });
+              });
+            }
+        });
+    };
 
     const table = useReactTable({
         data,
@@ -217,6 +233,7 @@ export default function DataTableDemo() {
                 })
         });
     }
+    
 
     return (
         <div className="w-full">
@@ -273,6 +290,8 @@ export default function DataTableDemo() {
                                     <FormSucces message={success}/>
                                     <Button disabled={isPending} type="submit">Submit</Button>
                                 </form>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+
                         </AlertDialogContent>
                     </AlertDialog>
                 </DropdownMenu>

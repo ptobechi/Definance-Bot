@@ -6,6 +6,7 @@ import { privateRequest } from "@/config";
 
 interface Transaction {
     userid:                     string;
+    id:                     string;
     transaction_type:           string;
     transaction_amount:         string;
     transaction_date:           string;
@@ -24,6 +25,7 @@ interface Portfolio {
 
 interface userPortfolio {
     name:           string;
+    id:         string;
     userid:         string;
     sector:         string;
     roi:            string;

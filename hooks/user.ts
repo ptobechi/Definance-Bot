@@ -10,6 +10,7 @@ interface Transaction {
     transaction_type:           string;
     transaction_amount:         string;
     transaction_date:           string;
+    transaction_info:           string;
     transaction_status:         string;
 }
 

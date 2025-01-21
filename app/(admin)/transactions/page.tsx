@@ -18,7 +18,6 @@ import {
   MoreHorizontal
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -39,9 +38,15 @@ import {
 } from "@/components/ui/table"
 import useAllUser from "@/hooks/all-users"
 import Swal from "sweetalert2"
+import { privateRequest } from "@/config"
+import { toast } from "sonner"
+import { formatDateToDDMMYY } from "@/_functions"
+import { FaCheckCircle, FaQuestionCircle } from "react-icons/fa"
+import { FaMarkdown } from "react-icons/fa6"
 
 
 type User = {
+  userid: string
   id: string
   name: string
   amount: string
@@ -51,159 +56,192 @@ type User = {
   status: "pending" | "processing" | "success" | "failed"
 }
 
-const columns: ColumnDef<User>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "type",
-    header: "Type",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("type")}</div>
-    ),
-  },
-  {
-    accessorKey: "info",
-    header: "Currency - Address",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("info")}</div>
-    ),
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("name")}</div>
-    ),
-  },
-  {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount)
-
-      return <div className="text-right font-medium">{formatted}</div>
-    },
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("date")}</div>
-    ),
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const user = row.original
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Accept</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Reject</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={Delete}>Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
-]
-
-const Delete = () => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!"
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        title: "Deleted!",
-        text: "Your file has been deleted.",
-        icon: "success"
-      });
-    }
-  });
-}
-
-
 
 export default function DataTableDemo() {
-
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] =React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-
-
   const {data: allUsers, isLoading, error} = useAllUser()
   const [data, setData] = React.useState<User[]>([])
+
   React.useEffect(() => {
-    if (allUsers) {
-      // Collect transactions into a single array of User objects
-      const users: User[] = allUsers.flatMap((user) => {
-        if (user.transactions?.length > 0) {
-          return user.transactions.map((transaction) => ({
-            id: transaction.userid || user.id,
-            name: user.name || "N/A",
-            amount: transaction.transaction_amount || "N/A",
-            date: transaction.transaction_date || "N/A",
-            type: transaction.transaction_type || "N/A",
-            info: transaction.transaction_info || "N/A",
-            status: transaction.transaction_status ? "success" : "pending"
-          }));
-        }
-        return [];
-      });
-  
-      // Update state with collected users
-      setData(users);
+    const reload = () => {
+      if (allUsers) {
+        // Collect transactions into a single array of User objects
+        const users: User[] = allUsers.flatMap((user) => {
+          if (user.transactions?.length > 0) {
+            return user.transactions.map((transaction) => ({
+              userid: transaction.userid || user.id,
+              id: transaction.id,
+              name: user.name || "N/A",
+              amount: transaction.transaction_amount || "N/A",
+              date: transaction.transaction_date || "N/A",
+              type: transaction.transaction_type || "N/A",
+              info: transaction.transaction_info || "N/A",
+              status: transaction.transaction_status === "pending" ? "pending" : "success"
+            }));
+          }
+          return [];
+        });
+    
+        // Update state with collected users
+        setData(users);
+      }
     }
+    reload()
   }, [allUsers]);
 
+  const columns: ColumnDef<User>[] = [
+    {
+      accessorKey: "type",
+      enableHiding: false,
+      header: "Type",
+      cell: ({ row }) => {
+        const user = row.original
+
+        return (
+          <div className="capitalize flex items-center space-x-2">
+            {user.status === "pending" ? (
+              <FaQuestionCircle className="text-yellow-500 text-2xl"/>
+            ) : (
+              <FaCheckCircle className="text-green-500 text-2xl"/>
+            )}
+            <span>{row.getValue("type")}</span>
+          </div>
+        );
+    },
+    },
+    {
+      accessorKey: "info",
+      header: "Currency - Address",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("info")}</div>
+      ),
+    },
+    {
+      accessorKey: "name",
+      header: "Name",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("name")}</div>
+      ),
+    },
+    {
+      accessorKey: "amount",
+      header: () => <div className="text-right">Amount</div>,
+      cell: ({ row }) => {
+        const amount = parseFloat(row.getValue("amount"))
+  
+        // Format the amount as a dollar amount
+        const formatted = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(amount)
+  
+        return <div className="text-right font-medium">{formatted}</div>
+      },
+    },
+    {
+      accessorKey: "date",
+      header: "Date",
+      cell: ({ row }) => (
+        <div className="capitalize">{formatDateToDDMMYY(row.getValue("date"))}</div>
+      ),
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const user = row.original
+  
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={
+                () => ProcessTransaction(
+                  {
+                    id:user.id,
+                    userid: user.userid,
+                    status:user.status,
+                    amount: user.amount,
+                    type: user.type,
+                    info: user.info
+                  })
+              }>
+                {
+                  user.status === "pending" ? "Accept" : "Reject"
+                }
+                {isPending && "ing"}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => Delete({id:user.id, userid: user.userid})}>Delete</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      },
+    },
+  ] 
+  
+  const [isPending, startTransition] = React.useTransition()
+  const ProcessTransaction = async (value: any) => {
+    toast.success("updating transaction");
+    startTransition(() => {
+        privateRequest.post("/update-transaction", value)
+          .then((data) => {
+              if (data.status === 200) {
+                  toast.success("updated successful");
+              }
+          })
+          .catch((error) => {
+              toast.error(
+                  error.error || "Unable to complete transaction at this time, please try again later"
+              );
+          });
+    });
+  }
+
+  const Delete = async (value: any) => {
+      Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+          if (result.isConfirmed) {
+              toast.success("deleting record");
+              startTransition(() => {
+                  privateRequest
+                      .delete(`/delete-transaction?id=${value.id}&userId=${value.userid}`)
+                      .then((data) => {
+                          if (data.status === 200) {
+                              Swal.fire({
+                                  title: "Deleted!",
+                                  text: "Your transaction has been deleted.",
+                                  icon: "success",
+                              });
+                              toast.success("Transaction deleted successfully");
+                          }
+                      })
+                      .catch((error) => {
+                          toast.error(
+                              error.error || "Unable to delete transaction at this time, please try again later"
+                          );
+                      });
+              });
+          }
+      });
+  };
 
   const table = useReactTable({
     data,

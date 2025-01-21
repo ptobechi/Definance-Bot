@@ -1,19 +1,22 @@
 "use client"
+
 import React, { Suspense } from "react";
 import DashHeader from "../_components/dash-header";
 import WalletPortfolio from "../_components/wallet";
 import useWalletPortfolio from "@/hooks/useWalletPortfolio";
 import { formatToUSD } from "@/_functions";
+import { useCurrentUser } from "@/hooks/active-user-session";
 
 
 const Dashbaord = () => {
+    const user = useCurrentUser();
 
     const {totalBalance} = useWalletPortfolio();
 
     return (
         <section>
             <DashHeader
-                title="My Account"
+                title={`Welcome, ${user?.name}`}
                 subTitle="A glance summary of your trading account. Have fun!"
                 isButton
             />

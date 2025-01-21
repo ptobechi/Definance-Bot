@@ -27,13 +27,16 @@ export const login = async (values: z.infer<typeof
     if (!existingUser || !existingUser.email || !existingUser.password)
         return {error: "User does not exists"}
 
-    if (!existingUser.emailVerified) {
+    if (!existingUser.emailVerified && existingUser.name) {
         const verificationToken = await generateVerificationToken(
             existingUser.email
         )
 
+        const name = existingUser.name
+
         await sendVerificationToken(
             email,
+            name,
             verificationToken.token
         )
 

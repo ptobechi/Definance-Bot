@@ -9,7 +9,7 @@ import {
 import { IoLogOut } from 'react-icons/io5'
 import Link from 'next/link'
 import { BiTable } from 'react-icons/bi'
-import { FaUserCheck } from 'react-icons/fa'
+// import { FaUserCheck } from 'react-icons/fa'
 import { FaBitcoinSign, FaFileInvoiceDollar } from 'react-icons/fa6'
 import { logOut } from '@/actions/logout'
 
@@ -90,11 +90,11 @@ export default function Sidebar({ show, setter }: sidebarProps) {
                         route="/admin"
                         icon={<FcHome />}
                     />
-                    <MenuItem
+                    {/* <MenuItem
                         name="Users"
                         route="/users"
                         icon={<FaUserCheck />}
-                    />
+                    /> */}
                     <MenuItem
                         name="Transactions"
                         route="/transactions"

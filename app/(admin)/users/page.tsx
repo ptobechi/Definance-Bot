@@ -41,6 +41,8 @@ import {
 import useAllUser from "@/hooks/all-users"
 import Link from "next/link"
 import Swal from 'sweetalert2'
+import { privateRequest } from "@/config"
+import { toast } from "sonner"
 
 
 type User = {
@@ -49,124 +51,6 @@ type User = {
   email: string
   password: string
   status: "pending" | "processing" | "success" | "failed" | "active"
-}
-
-const columns: ColumnDef<User>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("name")}</div>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-  },
-  {
-    accessorKey: "password",
-    header: "Password",
-    cell: ({ row }) => <div className="lowercase">{row.getValue("password")}</div>,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div className="lowercase">{row.getValue("status")}</div>,
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const user = row.original
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => copyUserID(user.id)}
-            >
-              Copy User ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href={'/users/'+user.id}>
-                View user details
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={DeleteUser}>
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
-]
-
-const copyUserID = (id: string) => {
-  navigator.clipboard.writeText(id)
-  alert('copied')
-}
-
-const DeleteUser = () => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!"
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        title: "Deleted!",
-        text: "Your file has been deleted.",
-        icon: "success"
-      });
-    }
-  });
 }
 
 export default function DataTableDemo() {
@@ -178,26 +62,163 @@ export default function DataTableDemo() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-
-
   const {data: allUsers, isLoading, error} = useAllUser()
   const [data, setData] = React.useState<User[]>([])
+    const [isPending, startTransition] = React.useTransition()
+
   React.useEffect(() => {
-    if (allUsers) {
-      // Transform allUsers into User[] and update state
-      const users: User[] = allUsers.map((user) => ({
-        id: user.id || "N/A", // Default value if id is not present
-        name: user.name || "Unknown",
-        email: user.email || "No email",
-        password: user.password || "No password",
-        status: user.emailVerified ? "active" : "pending",
-      }));
-  
-      setData(users);
+    const loadUsers = () => {
+      if (allUsers) {
+        // Transform allUsers into User[] and update state
+        const users: User[] = allUsers.map((user) => ({
+          id: user.id || "N/A", // Default value if id is not present
+          name: user.name || "Unknown",
+          email: user.email || "No email",
+          password: user.password || "No password",
+          status: user.emailVerified ? "active" : "pending",
+        }));
+    
+        setData(users);
+      }
     }
+    loadUsers()
   }, [allUsers]);
 
-
+  const columns: ColumnDef<User>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "name",
+      header: "Name",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("name")}</div>
+      ),
+    },
+    {
+      accessorKey: "email",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Email
+            <ArrowUpDown />
+          </Button>
+        )
+      },
+      cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    },
+    {
+      accessorKey: "password",
+      header: "Password",
+      cell: ({ row }) => <div className="lowercase">{row.getValue("password")}</div>,
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => <div className="lowercase">{row.getValue("status")}</div>,
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const user = row.original
+  
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => copyUserID(user.id)}
+              >
+                Copy User ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link href={'/users/'+user.id}>
+                  View user details
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => DeleteUser(user.id)}>
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      },
+    },
+  ]
+  
+  const copyUserID = (id: string) => {
+    navigator.clipboard.writeText(id)
+    alert('copied')
+  }
+  
+  const DeleteUser = (userid: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        toast.success("deleting records");
+        startTransition(() => {
+          privateRequest
+            .delete(`/delete-user?userId=${userid}`)
+            .then((data) => {
+                if (data.status === 200) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: data.data.success,
+                        icon: "success",
+                    }).then(() => {
+                      window.location.reload()
+                    });
+                    toast.success(data.data.success);
+                }
+            })
+            .catch((error) => {
+                toast.error(
+                    error.error || "Unable to delete transaction at this time, please try again later"
+                );
+            });
+        });
+      }
+    });
+  }
+  
   const table = useReactTable({
     data,
     columns,
