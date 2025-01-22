@@ -1,7 +1,6 @@
 "use client"
 
 import useSWR from "swr";
-import { useCurrentUser } from "./active-user-session";
 import { privateRequest } from "@/config";
 
 interface UserPortfolio {
@@ -13,31 +12,27 @@ interface UserPortfolio {
     close_date?:        string;
 
 }
-
 // grab the mutate function from this hook and call it in
 // specific places that the transaction updates to fetch 
 // fresh data from the backend
-const useUserPortfolio =  () => {
-    const loggedUser = useCurrentUser();
+const useUserPortfolio = () => {
+    const fetcher = (url: string) =>
+        privateRequest
+            .get<UserPortfolio[]>(`${url}`)
+            .then((res) => res.data)
+            .catch((err) => {
+                throw new Error(err.response?.data?.error || "Failed to fetch data");
+            });
 
-    if (!loggedUser || !loggedUser.id) return {}
-
-    // Define a fetcher that uses the loggedUser.id
-    const fetcher = (url: string) => 
-        privateRequest.get<UserPortfolio[]>(`${url}/${loggedUser?.id}`).then((res) => res.data);
-
-    // Call useSWR with the key, fetcher, and config object
     const { data, isLoading, error, mutate } = useSWR(
-        "/portfolio/",
+        "/portfolio",
         fetcher,
         {
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
         }
     );
 
-    
-    return { data, isLoading, error };
+    return { data, isLoading, error, mutate };
 };
-
 export default useUserPortfolio;

@@ -61,9 +61,23 @@ export const getUserPortfolio = async (id: string) => {
     }
 }
 
-export const portfolio = async (id: string) => {
+/**
+ * getUserInvestmentPorfolio - get all stocks and investment
+ * a user invested in
+ * @param id - userid
+ * @returns  - investment portfolio
+ */
+export const getUserInvestmentPorfolio = async (id: string) => {
     try {
-        
+        const portfolio = await db.userPortfolio.findMany({
+            where: { userId: id },
+        });
+
+        if (portfolio.length === 0) {
+            return null
+        }
+
+        return portfolio;
     } catch (error) {
         return {error: error}
     }

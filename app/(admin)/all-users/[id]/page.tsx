@@ -1,19 +1,12 @@
 "use client";
 
-import { useParams } from "next/navigation";
-// import {
-//     BellRing,
-//     Check
-// } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
-    // CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import useUser from "@/hooks/user";
@@ -170,15 +163,21 @@ const usertransactions: ColumnDef<UserTransaction>[] = [
     },
 ]
 
-const Page = () => {
-    const param = useParams();
-    const id = Array.isArray(param.id) ? param.id[0] : param.id;
-    const {data: user, isLoading, error} = useUser(id);
+const Page = ({params} : {params:{id: string}}) => {
+    const {data: user, isLoading, error} = useUser(params.id);
     const [walletBal, setWalletBal] = useState(0);
     const [investmentSum, setInvestmentSum] = useState(0);
     const [isPending, startTransition] = useTransition()
     const [error_msg, setErrorMsg] = useState<string | undefined>("")
     const [success, setSuccess] = useState<string | undefined>("")
+    const [profile, setProfile] = useState<
+        {
+            name: string;
+            email: string;
+            password?: string;
+            emailVerified?: string;
+        }
+    >()
 
     const [formData, setFormData] = useState<
         {
@@ -249,6 +248,8 @@ const Page = () => {
 
     useEffect(() => {
         const getWalletPortfolio = async () => {
+            if (user)
+                setProfile(user)
             const walletInfo: CryptoPortfolio[] = [];
             let totalBal = 0;
 
@@ -391,7 +392,7 @@ const Page = () => {
                                 <Input
                                     id="name"
                                     placeholder="Enter Name"
-                                    defaultValue={user?.name}
+                                    defaultValue={profile?.name}
                                 />
                             </div>
 
@@ -401,7 +402,7 @@ const Page = () => {
                                 <Input
                                     id="email"
                                     placeholder="Enter Email"
-                                    defaultValue={user?.email}
+                                    defaultValue={profile?.email}
                                 />
                             </div>
 
@@ -411,7 +412,7 @@ const Page = () => {
                                 <Input
                                     id="password"
                                     placeholder="Enter Password"
-                                    defaultValue={user?.password}
+                                    defaultValue={profile?.password}
                                 />
                             </div>
 
@@ -421,7 +422,7 @@ const Page = () => {
                                 <Input
                                     id="status"
                                     placeholder="Status"
-                                    defaultValue={user?.emailVerified ? "active" : "not active"}
+                                    defaultValue={profile?.emailVerified ? "active" : "not active"}
                                 />
                             </div>
                         </div>
@@ -747,12 +748,6 @@ const Page = () => {
                     </DropdownMenu>
                 </div>
             </CardContent>
-
-            {/* <CardFooter>
-                <Button className="w-full">
-                    Update Profile <Check />
-                </Button>
-            </CardFooter> */}
         </Card>
     )
 

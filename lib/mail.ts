@@ -7,7 +7,7 @@ export const sendVerificationToken = async (
     name: string, 
     token: any
 ) => {
-    const confirmationLink = `https://defbots.ai/verify-token?token=${token}`;
+    const confirmationLink = `https://www.defbots.ai/verify-token?token=${token}`;
 
     await resend.emails.send({
         from: 'Profile Authentication Project <onboarding@defbots.ai>',
@@ -78,7 +78,7 @@ export const sendVerificationToken = async (
             <body>
                 <div class="container">
                     <div class="header">
-                        <img src="https://www.defbots.ai/_next/static/media/logo.64b0a1e1.svg" alt="Defbots Logo" />
+                        <img src="https://www.defbots.ai/_next/static/media/logo.5a4b0497.png" alt="Defbots Logo" />
                         <h1>Email Confirmation</h1>
                     </div>
                     <div class="content">
@@ -89,7 +89,7 @@ export const sendVerificationToken = async (
                     </div>
                     <div class="footer">
                         <p>&copy; 2025 Defbots.ai. All rights reserved.</p>
-                        <p><a href="https://defbots.ai">Visit our website</a></p>
+                        <p><a href="https://www.defbots.ai">Visit our website</a></p>
                     </div>
                 </div>
             </body>
@@ -103,7 +103,7 @@ export const sendResetPasswordLink = async (
     name: string,
     token: any
 ) => {
-    const resetLink = `https://defbots.ai/reset-password?token=${token}`;
+    const resetLink = `https://www.defbots.ai/reset-password?token=${token}`;
 
     await resend.emails.send({
         from: 'Profile Authentication Project <onboarding@defbots.ai>',
@@ -174,7 +174,7 @@ export const sendResetPasswordLink = async (
             <body>
                 <div class="container">
                     <div class="header">
-                        <img src="https://www.defbots.ai/_next/static/media/logo.64b0a1e1.svg" alt="Defbots Logo" />
+                        <img src="https://www.defbots.ai/_next/static/media/logo.5a4b0497.png" alt="Defbots Logo" />
                         <h1>Password Reset</h1>
                     </div>
                     <div class="content">
@@ -185,7 +185,7 @@ export const sendResetPasswordLink = async (
                     </div>
                     <div class="footer">
                         <p>&copy; 2025 Defbots.ai. All rights reserved.</p>
-                        <p><a href="https://defbots.ai">Visit our website</a></p>
+                        <p><a href="https://www.defbots.ai">Visit our website</a></p>
                     </div>
                 </div>
             </body>
@@ -270,7 +270,7 @@ export const sendTwoFactorTokenEmail = async (
             <div class="container">
                 <div class="header">
                 <div>
-                    <img src="https://www.defbots.ai/_next/static/media/logo.64b0a1e1.svg" alt="Defbots Logo" />
+                    <img src="https://www.defbots.ai/_next/static/media/logo.5a4b0497.png" alt="Defbots Logo" />
                 </div>
                 <h1>Two-Factor Authentication Code</h1>
                 </div>
@@ -282,7 +282,7 @@ export const sendTwoFactorTokenEmail = async (
                 </div>
                 <div class="footer">
                 <p>&copy; 2025 Defbots.ai. All rights reserved.</p>
-                <p><a href="https://defbots.ai">Visit our website</a></p>
+                <p><a href="https://www.defbots.ai">Visit our website</a></p>
                 </div>
             </div>
             </body>
@@ -356,7 +356,7 @@ export const sendDepositInitiatedMessage = async (
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://www.defbots.ai/_next/static/media/logo.64b0a1e1.svg" alt="Defbots Logo" />
+                    <img src="https://www.defbots.ai/_next/static/media/logo.5a4b0497.png" alt="Defbots Logo" />
                     <h1>Deposit Initiated</h1>
                 </div>
                 <div class="content">
@@ -368,7 +368,7 @@ export const sendDepositInitiatedMessage = async (
                 </div>
                 <div class="footer">
                     <p>&copy; 2025 Defbots.ai. All rights reserved.</p>
-                    <p><a href="https://defbots.ai">Visit our website</a></p>
+                    <p><a href="https://www.defbots.ai">Visit our website</a></p>
                 </div>
             </div>
         </body>
@@ -448,7 +448,7 @@ export const sendDepositCompletedMessage = async (
         <body>
             <div class="container">
                 <div class="header">
-                    <img src="https://www.defbots.ai/_next/static/media/logo.64b0a1e1.svg" alt="Defbots Logo" />
+                    <img src="https://www.defbots.ai/_next/static/media/logo.5a4b0497.png" alt="Defbots Logo" />
                     <h1>Deposit Completed</h1>
                 </div>
                 <div class="content">
@@ -459,7 +459,7 @@ export const sendDepositCompletedMessage = async (
                 </div>
                 <div class="footer">
                     <p>&copy; 2025 Defbots.ai. All rights reserved.</p>
-                    <p><a href="https://defbots.ai">Visit our website</a></p>
+                    <p><a href="https://www.defbots.ai">Visit our website</a></p>
                 </div>
             </div>
         </body>

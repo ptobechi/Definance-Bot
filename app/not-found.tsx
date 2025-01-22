@@ -1,6 +1,6 @@
 const NotFoundPage = () => {
     return (
-        <section>404</section>
+        <section className="text-center">404</section>
     )
 }
 export default NotFoundPage

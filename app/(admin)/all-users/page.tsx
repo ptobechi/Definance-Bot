@@ -53,7 +53,7 @@ type User = {
   status: "pending" | "processing" | "success" | "failed" | "active"
 }
 
-export default function DataTableDemo() {
+export default function Page() {
 
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -162,7 +162,7 @@ export default function DataTableDemo() {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link href={'/users/'+user.id}>
+                <Link href={'/all-users/'+user.id}>
                   View user details
                 </Link>
               </DropdownMenuItem>

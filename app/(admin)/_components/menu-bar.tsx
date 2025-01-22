@@ -4,8 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { FiMenu as Icon } from 'react-icons/fi'
 import { FaUser } from 'react-icons/fa'
-
-import logo from '@/img/logo.svg'
+import logo from '@/img/logo.png'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,7 +15,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { useCurrentUser } from '@/hooks/active-user-session'
 import { logOut } from '@/actions/logout'
-
 
 export default function MenuBarMobile({ setter }: any) {
     const onSubmit = () => {

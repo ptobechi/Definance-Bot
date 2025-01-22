@@ -7,7 +7,7 @@ import useUserPortfolio from "@/hooks/useUserPortfolio";
 
 const Page = () => {
     const {data: portfolio, isLoading, error} = useUserPortfolio()
-    
+
     return (
         <>
             <DashHeader
@@ -20,7 +20,7 @@ const Page = () => {
 
             {error && (
                 <p className="text-pcolor text-base">
-                Couldn't fetch portfolio, Try again later!
+                Oops! Refresh
                 </p>
             )}
             {isLoading && (
@@ -29,7 +29,7 @@ const Page = () => {
                 </div>
             )}
 
-            {!isLoading && !error && portfolio && portfolio.length > 0 && (
+            {!isLoading && !error && portfolio && portfolio !== null && portfolio.length > 0 ? (
                 <div className="border border-[#dbdfea] rounded-md">
                     {portfolio.map((data, index) => (
                         <div
@@ -46,22 +46,27 @@ const Page = () => {
                                     {data.sector}
                                 </p>
                             </div>
-
                             <div className="flex gap-4 items-center">
                                 <div className="flex flex-col gap-1">
                                     <h1 className="font-medium text-sideBg text-base">
                                         {formatToUSD(data.amount)}
                                     </h1>
                                     <p className="text-pcolor text-sm text-green-500">
-                                        {data.amount && data.opened_date && data.close_date && data.roi &&
-                                            formatToUSD(calculateProfit(data.amount, data.opened_date, data.close_date, data.roi))
-                                        }
+                                        {data.amount &&
+                                            data.opened_date &&
+                                            data.close_date &&
+                                            data.roi &&
+                                            formatToUSD(
+                                                calculateProfit(data.amount, data.opened_date, data.close_date, data.roi)
+                                            )}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
+            ) : (
+                <p className="text-pcolor text-base"></p>
             )}
         </>
     )

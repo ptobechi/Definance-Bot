@@ -1,7 +1,7 @@
 "use client"
 
 import React, { Dispatch, SetStateAction } from 'react'
-import logo from '@/img/logo.svg'
+import logo from '@/img/logo.png'
 import { usePathname } from 'next/navigation'
 import {
     FcHome,
@@ -9,7 +9,6 @@ import {
 import { IoLogOut } from 'react-icons/io5'
 import Link from 'next/link'
 import { BiTable } from 'react-icons/bi'
-// import { FaUserCheck } from 'react-icons/fa'
 import { FaBitcoinSign, FaFileInvoiceDollar } from 'react-icons/fa6'
 import { logOut } from '@/actions/logout'
 
@@ -78,7 +77,7 @@ export default function Sidebar({ show, setter }: sidebarProps) {
                         {/*eslint-disable-next-line*/}
                         <img
                             src={logo.src}
-                            alt="Company Logo"
+                            alt="Defbots"
                             width={200}
                             height={200}
                         />

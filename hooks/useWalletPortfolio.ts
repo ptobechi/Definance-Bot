@@ -1,7 +1,6 @@
 "use client"
 
 import useSWR from "swr";
-// import { useCurrentUser } from "./active-user-session";
 import { privateRequest } from "@/config";
 import { useEffect, useState } from "react";
 import { coinDetail } from "@/_functions";
@@ -15,7 +14,6 @@ interface CryptoPortfolio {
     usd_balance?:           string;
     crypto_rate?:           string;
 }
-
 
 // grab the mutate function from this hook and call it in
 // specific places that the transaction updates to fetch 
@@ -34,8 +32,8 @@ const useWalletPortfolio =  () => {
         "/wallet-portfolio/",
         fetcher,
         {
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
         }
     );
 

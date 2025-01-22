@@ -44,7 +44,6 @@ import Swal from 'sweetalert2'
 import { privateRequest } from "@/config"
 import { toast } from "sonner"
 
-
 type User = {
   id: string
   name: string
@@ -53,8 +52,7 @@ type User = {
   status: "pending" | "processing" | "success" | "failed" | "active"
 }
 
-export default function DataTableDemo() {
-
+export default function Page() {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -64,7 +62,7 @@ export default function DataTableDemo() {
   const [rowSelection, setRowSelection] = React.useState({})
   const {data: allUsers, isLoading, error} = useAllUser()
   const [data, setData] = React.useState<User[]>([])
-    const [isPending, startTransition] = React.useTransition()
+  const [isPending, startTransition] = React.useTransition()
 
   React.useEffect(() => {
     const loadUsers = () => {
@@ -162,7 +160,7 @@ export default function DataTableDemo() {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link href={'/users/'+user.id}>
+                <Link href={'/all-users/'}>
                   View user details
                 </Link>
               </DropdownMenuItem>

@@ -1,8 +1,8 @@
 import { currentRole } from '@/lib/auth';
 import { db } from '@/lib/db';
 
-export const runtime = 'nodejs'; // Use Node.js runtime
-export const dynamic = 'force-dynamic'; // Forces dynamic rendering
+// export const runtime = 'nodejs'; // Use Node.js runtime
+// export const dynamic = 'force-dynamic'; // Forces dynamic rendering
 
 export const GET = async () => {
   try {

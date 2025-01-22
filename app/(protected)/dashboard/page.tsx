@@ -10,13 +10,16 @@ import { useCurrentUser } from "@/hooks/active-user-session";
 
 const Dashbaord = () => {
     const user = useCurrentUser();
-
     const {totalBalance} = useWalletPortfolio();
+
+    if (!user) {
+        return <p>Loading...</p>;
+    }
 
     return (
         <section>
             <DashHeader
-                title={`Welcome, ${user?.name}`}
+                title={`Welcome, ${user.name}`}
                 subTitle="A glance summary of your trading account. Have fun!"
                 isButton
             />
