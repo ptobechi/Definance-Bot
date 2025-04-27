@@ -50,6 +50,7 @@ type User = {
   email: string
   password: string
   status: "pending" | "processing" | "success" | "failed" | "active"
+  // emailVerified: string
 }
 
 export default function Page() {
@@ -74,6 +75,7 @@ export default function Page() {
           email: user.email || "No email",
           password: user.password || "No password",
           status: user.emailVerified ? "active" : "pending",
+          emailVerified: user.emailVerified
         }));
     
         setData(users);
@@ -105,32 +107,48 @@ export default function Page() {
       enableSorting: false,
       enableHiding: false,
     },
+    // {
+    //   accessorKey: "emailVerified", // Assuming users have a createdAt field
+    //   header: ({ column }) => (
+    //     <Button
+    //       variant="ghost"
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    //     >
+    //       Date Added
+    //       <ArrowUpDown className="ml-2 h-4 w-4" />
+    //     </Button>
+    //   ),
+    //   cell: ({ row }) => (
+    //     <div>{new Date(row.getValue("emailVerified")).toLocaleDateString()}</div>
+    //   ),
+    //   sortingFn: "datetime",
+    // },
     {
       accessorKey: "name",
-      header: "Name",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       ),
+      cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+      sortingFn: "alphanumeric",
     },
     {
       accessorKey: "email",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Email
-            <ArrowUpDown />
-          </Button>
-        )
-      },
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
       cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-    },
-    {
-      accessorKey: "password",
-      header: "Password",
-      cell: ({ row }) => <div className="lowercase">{row.getValue("password")}</div>,
     },
     {
       accessorKey: "status",
@@ -141,7 +159,7 @@ export default function Page() {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const user = row.original
+        const user = row.original;
   
         return (
           <DropdownMenu>
@@ -153,27 +171,22 @@ export default function Page() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => copyUserID(user.id)}
-              >
+              <DropdownMenuItem onClick={() => copyUserID(user.id)}>
                 Copy User ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link href={'/all-users/'}>
-                  View user details
-                </Link>
+                <Link href={`/all-users/${user.id}`}>View user details</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => DeleteUser(user.id)}>
-                Delete
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => DeleteUser(user.id)}>Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        )
+        );
       },
     },
-  ]
+  ];
+  
   
   const copyUserID = (id: string) => {
     navigator.clipboard.writeText(id)

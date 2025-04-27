@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select"
 import schema from "@/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
 import {
     useEffect,
     useState,
@@ -36,6 +37,7 @@ const ConvertPage = () => {
     const [isPending, startTransition] = useTransition()
     const [completePayment, setCompletePayment] = useState(false)
     const[loading, setLoading] = useState(false);
+    const router = useRouter()
 
     const form = useForm<z.infer<typeof schema.PaymentSchema>>({
         resolver: zodResolver(schema.PaymentSchema),
@@ -59,11 +61,9 @@ const ConvertPage = () => {
                             // set message
                             toast.error(data.error)
                         }
-                        if (data.success) {
+                        if (data?.success) {
                             toast.success(data.success);
-                            setTimeout(() => {
-                                window.location.reload();
-                            }, 3000);
+                            router.push('/portfolio')
                         }
                         setLoading(false)
                     })

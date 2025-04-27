@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -74,18 +73,18 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, cardInfo }) => {
             .post("/wallet-portfolio", data)
             .then((response: any) => {
                 if (response["status"] === 201) {
-                toast(
-                    `You have successfully purchased ${cardInfo.name }`, {
-                    description:`
-                    Started:Today (${new Date()}
-                    Holding Period: ${new Date(new Date().getTime() + parseFloat(period) * 24 * 60 * 60 * 1000)})
-                    `,
-                    action: {
-                    label: "View Portfolio",
-                    onClick: () => router.push('/portfolio'),
-                    },
-                })
-                router.push('/portfolio')
+                    toast(
+                        `You have successfully purchased ${cardInfo.name }`, {
+                        description:`
+                        Started:Today (${new Date()}
+                        Holding Period: ${new Date(new Date().getTime() + parseFloat(period) * 24 * 60 * 60 * 1000)})
+                        `,
+                        action: {
+                        label: "View Portfolio",
+                        onClick: () => router.push('/portfolio'),
+                        },
+                    })
+                    router.push('/portfolio')
                 }
             })
             .catch((error: any) => {
@@ -94,7 +93,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, cardInfo }) => {
                 // Check if the status code is 403
                 if (error.response && error.response.status === 403) {
                 } else {
-                    toast("Error: try again"); // Handle 403 error here
+                    toast("Error: Try again, This might be to insufficient USDT"); // Handle 403 error here
                 }
                 } else {
                 toast("Error:unknown error occured please try again later");
@@ -124,7 +123,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, cardInfo }) => {
                             <h2 className="text-xl font-bold">{cardInfo.name}</h2>
                         </div>
                         </CardTitle>
-                        <CardDescription>Deploy your new project in one-click.</CardDescription>
+                        {/* <CardDescription>Deploy your new project in one-click.</CardDescription> */}
                     </CardHeader>
                     <CardContent>
                         <form>

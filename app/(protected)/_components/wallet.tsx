@@ -53,12 +53,12 @@ const WalletPortfolio = () => {
                                 <p className="font-semibold text-sideBg text-lg md:text-2xl mb-1">
                                 {formatToUSD(w.usd_balance)} <span className="text-sm text-pcolor">USD</span>
                                 </p>
-                                <p className="text-sideBg text-base font-medium">
+                                {/* <p className="text-sideBg text-base font-medium">
                                 {w.crypto_bal}{" "}
                                 <span className="text-pcolor font-normal">
                                     {w.crypto_symbol.toUpperCase()}
                                 </span>
-                                </p>
+                                </p> */}
                             </div>
                             <div className="px-3 xs:px-6 py-4 flex justify-between text-sm xs:text-base text-gray-600">
                                 <Link href={"/deposit"} className="flex items-center gap-x-2">

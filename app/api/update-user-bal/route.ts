@@ -1,5 +1,6 @@
 "use server"
 import { db } from "@/lib/db";
+import { sendDepositCompletedMessage } from "@/lib/mail";
 
 export const POST = async (revalues: Request) => {
     try {
@@ -16,6 +17,8 @@ export const POST = async (revalues: Request) => {
 
         // Perform updates
         const results = [];
+        let email;
+        let amount;
         for (const update of updates) {
             if (!update.userId || !update.crypto_symbol || update.crypto_bal === undefined) {
                 results.push({
@@ -23,6 +26,9 @@ export const POST = async (revalues: Request) => {
                 });
                 continue;
             }
+
+            email = update.email
+            amount = update.amount
 
             try {
                 const result = await db.cryptoPortfolio.update({
@@ -44,6 +50,9 @@ export const POST = async (revalues: Request) => {
                 results.push({ error: `Failed to update ${update.crypto_symbol}` });
             }
         }
+
+        //send confirmation email
+        await sendDepositCompletedMessage(email, amount, "USD")
 
         // Return the results
         return new Response(

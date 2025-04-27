@@ -14,6 +14,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import {
+  ArrowUpDown,
   ChevronDown,
   MoreHorizontal
 } from "lucide-react"
@@ -49,6 +50,7 @@ type User = {
   userid: string
   id: string
   name: string
+  email: string
   amount: string
   date: string
   type: string
@@ -58,7 +60,7 @@ type User = {
 
 
 export default function DataTableDemo() {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  // const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] =React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
@@ -75,6 +77,7 @@ export default function DataTableDemo() {
               userid: transaction.userid || user.id,
               id: transaction.id,
               name: user.name || "N/A",
+              email: user.email || "N/A",
               amount: transaction.transaction_amount || "N/A",
               date: transaction.transaction_date || "N/A",
               type: transaction.transaction_type || "N/A",
@@ -98,62 +101,65 @@ export default function DataTableDemo() {
       enableHiding: false,
       header: "Type",
       cell: ({ row }) => {
-        const user = row.original
-
+        const user = row.original;
         return (
           <div className="capitalize flex items-center space-x-2">
             {user.status === "pending" ? (
-              <FaQuestionCircle className="text-yellow-500 text-2xl"/>
+              <FaQuestionCircle className="text-yellow-500 text-2xl" />
             ) : (
-              <FaCheckCircle className="text-green-500 text-2xl"/>
+              <FaCheckCircle className="text-green-500 text-2xl" />
             )}
             <span>{row.getValue("type")}</span>
           </div>
         );
-    },
+      },
     },
     {
       accessorKey: "info",
       header: "Currency - Address",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("info")}</div>
-      ),
+      cell: ({ row }) => <div className="capitalize">{row.getValue("info")}</div>,
     },
     {
       accessorKey: "name",
       header: "Name",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
-      ),
+      cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
     },
     {
       accessorKey: "amount",
       header: () => <div className="text-right">Amount</div>,
       cell: ({ row }) => {
-        const amount = parseFloat(row.getValue("amount"))
+        const amount = parseFloat(row.getValue("amount"));
   
-        // Format the amount as a dollar amount
+        // Format the amount as USD
         const formatted = new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
-        }).format(amount)
+        }).format(amount);
   
-        return <div className="text-right font-medium">{formatted}</div>
+        return <div className="text-right font-medium">{formatted}</div>;
       },
     },
     {
-      accessorKey: "date",
-      header: "Date",
+      accessorKey: "date", // Ensure transactions have a date field
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
       cell: ({ row }) => (
         <div className="capitalize">{formatDateToDDMMYY(row.getValue("date"))}</div>
       ),
+      sortingFn: "datetime", // Use correct sorting function for dates
     },
     {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const user = row.original
-  
+        const user = row.original;
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -165,34 +171,45 @@ export default function DataTableDemo() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={
-                () => ProcessTransaction(
-                  {
-                    id:user.id,
-                    userid: user.userid,
-                    status:user.status,
-                    amount: user.amount,
-                    type: user.type,
-                    info: user.info
-                  })
-              }>
-                {
-                  user.status === "pending" ? "Accept" : "Reject"
-                }
-                {isPending && "ing"}
-              </DropdownMenuItem>
+              {loading ? (
+                <>processing..</>
+              ) : (
+                <DropdownMenuItem
+                  onClick={() =>
+                    ProcessTransaction({
+                      id: user.id,
+                      userid: user.userid,
+                      name: user.name,
+                      email: user.email,
+                      status: user.status,
+                      amount: user.amount,
+                      type: user.type,
+                      info: user.info,
+                    })
+                  }
+                >
+                  {user.status === "pending" ? "Accept" : "Reject"}
+                  {isPending && "ing"}
+                </DropdownMenuItem>
+              )}
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => Delete({id:user.id, userid: user.userid})}>Delete</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => Delete({ id: user.id, userid: user.userid })}>
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        )
+        );
       },
     },
-  ] 
+  ];
   
+  
+  
+  const [loading, setLoading] = React.useState(false)
   const [isPending, startTransition] = React.useTransition()
   const ProcessTransaction = async (value: any) => {
     toast.success("updating transaction");
+    setLoading(true)
     startTransition(() => {
         privateRequest.post("/update-transaction", value)
           .then((data) => {
@@ -205,6 +222,8 @@ export default function DataTableDemo() {
                   error.error || "Unable to complete transaction at this time, please try again later"
               );
           });
+          window.location.reload()
+        setLoading(false)
     });
   }
 
@@ -231,6 +250,7 @@ export default function DataTableDemo() {
                                   icon: "success",
                               });
                               toast.success("Transaction deleted successfully");
+                              window.location.reload()
                           }
                       })
                       .catch((error) => {
@@ -243,16 +263,20 @@ export default function DataTableDemo() {
       });
   };
 
+  const [sorting, setSorting] = React.useState<SortingState>([
+    { id: "date", desc: true }, // Default sorting: Most Recent First
+  ]);
+  
   const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+      onColumnFiltersChange: setColumnFilters,
     onRowSelectionChange: setRowSelection,
     state: {
       sorting,
@@ -260,7 +284,26 @@ export default function DataTableDemo() {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
+
+  // const table = useReactTable({
+  //   data,
+  //   columns,
+  //   onSortingChange: setSorting,
+  //   onColumnFiltersChange: setColumnFilters,
+  //   getCoreRowModel: getCoreRowModel(),
+  //   getPaginationRowModel: getPaginationRowModel(),
+  //   getSortedRowModel: getSortedRowModel(),
+  //   getFilteredRowModel: getFilteredRowModel(),
+  //   onColumnVisibilityChange: setColumnVisibility,
+  //   onRowSelectionChange: setRowSelection,
+  //   state: {
+  //     sorting,
+  //     columnFilters,
+  //     columnVisibility,
+  //     rowSelection,
+  //   },
+  // })
 
   return (
     <div className="w-full">

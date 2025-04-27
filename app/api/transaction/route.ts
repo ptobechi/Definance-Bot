@@ -3,6 +3,8 @@
 import schema from "@/schema";
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { sendDepositInitiatedMessage } from "@/lib/mail";
+
 
 export const POST = async (values: Request) => {
         const validatedValues = schema.PaymentSchema.safeParse(values);
@@ -36,6 +38,10 @@ export const POST = async (values: Request) => {
             })
 
             const random = Math.floor(Math.random() * allPaymentAddr.length);
+
+                if (loggedUser.email) {
+                    await sendDepositInitiatedMessage(loggedUser.email, amount, "USD", allPaymentAddr[random].publicAddress)
+                }
 
             return new Response(JSON.stringify(
                 {

@@ -132,7 +132,7 @@ export default function Page() {
     {
       accessorKey: "password",
       header: "Password",
-      cell: ({ row }) => <div className="lowercase">{row.getValue("password")}</div>,
+      cell: ({ row }) => <div className="">{row.getValue("password")}</div>,
     },
     {
       accessorKey: "status",

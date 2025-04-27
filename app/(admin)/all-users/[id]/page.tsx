@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import useUser from "@/hooks/user";
 import { useEffect, useState, useTransition } from "react";
-import { coinDetail, formatDateToDDMMYY, formatToUSD } from "@/_functions";
+import { formatDateToDDMMYY, formatToUSD } from "@/_functions";
 import { DropdownMenu } from "@/components/ui/dropdown-menu";
 import { 
     AlertDialog,
@@ -178,12 +178,11 @@ const Page = ({params} : {params:{id: string}}) => {
             emailVerified?: string;
         }
     >()
-
     const [formData, setFormData] = useState<
         {
             crypto_name: string; 
             usd_balance?: string;
-            crypto_bal: string;
+            crypto_bal?: string;
             crypto_symbol: string;
             crypto_rate?: string;
         }[]
@@ -212,8 +211,8 @@ const Page = ({params} : {params:{id: string}}) => {
                 );
             
                 // If a match is found, update the balances
-                if (matchingItem && matchingItem.usd_balance && matchingItem.crypto_rate) {
-                    const newBal = parseFloat(matchingItem.usd_balance) / parseFloat(matchingItem.crypto_rate)
+                if (matchingItem && matchingItem.usd_balance) {
+                    const newBal = parseFloat(matchingItem.usd_balance)
                   return {
                     ...item,
                     crypto_prev_bal: item.crypto_bal, // Store current balance as previous balance
@@ -231,6 +230,7 @@ const Page = ({params} : {params:{id: string}}) => {
                         if (data.status === 200) {
                             setSuccess("Successful")
                             toast.success("updated successful");
+
                             // setTimeout(() => {
                             //     window.location.reload(); // Reload only if absolutely necessary
                             // }, 3000);
@@ -238,12 +238,14 @@ const Page = ({params} : {params:{id: string}}) => {
                     })
                     .catch((error) => {
                         setErrorMsg("Failed, try again")
+
                         toast.error(
                             error.error || "Unable to complete transaction at this time, please try again later"
                         );
                     });
             });
         }
+
     }
 
     useEffect(() => {
@@ -254,19 +256,17 @@ const Page = ({params} : {params:{id: string}}) => {
             let totalBal = 0;
 
             if (user && user.cryptoPortfolio) {
-                for (let i = 0; i < user.cryptoPortfolio.length; i++) {
-                    const coinInfo = await (await coinDetail(user.cryptoPortfolio[i].crypto_symbol)).json()
-                    
-                    const usdBal: any = parseFloat(user.cryptoPortfolio[i].crypto_bal) * parseFloat(coinInfo.rate);
+                for (let i = 0; i < user.cryptoPortfolio.length; i++) {                    
+                    const usdBal: any = parseFloat(user.cryptoPortfolio[i].crypto_bal);
                     totalBal += parseFloat(usdBal);
 
                     walletInfo.push({
-                        crypto_name: coinInfo.name,
+                        crypto_name: user.cryptoPortfolio[i].crypto_name,
                         crypto_symbol: user.cryptoPortfolio[i].crypto_symbol,
                         crypto_bal: Number.isInteger(user.cryptoPortfolio[i].crypto_bal) ? user.cryptoPortfolio[i].crypto_bal : parseFloat(user.cryptoPortfolio[i].crypto_bal).toFixed(5),
-                        usd_balance: (parseFloat(user.cryptoPortfolio[i].crypto_bal) * parseFloat(coinInfo.rate)).toString(),
-                        crypto_rate: (coinInfo.rate).toString(),
-                        logo_url: coinInfo.webp64,
+                        usd_balance: user.cryptoPortfolio[i].crypto_bal,
+                        crypto_rate: '',
+                        logo_url: `/${user.cryptoPortfolio[i].crypto_symbol}.webp`,
                     });
                 }
             }
@@ -445,7 +445,7 @@ const Page = ({params} : {params:{id: string}}) => {
                                     View All
                                 </Button>
                             </AlertDialogTrigger>
-                            <AlertDialogContent className="w-screen max-w-full">
+                            <AlertDialogContent className="w-screen">
                                 <AlertDialogTitle>Wallet Portfolio</AlertDialogTitle>
                                 <AlertDialogDescription>
                                     This is a user wallet portfolio
@@ -460,28 +460,30 @@ const Page = ({params} : {params:{id: string}}) => {
 
                                                 <div className="flex items-center gap-2">
                                                     {/* "Use" Label Before the First Input */}
-                                                    <Label htmlFor={`address-${index}`} className="text-sm font-medium">
+                                                    {/* <Label htmlFor={`address-${index}`} className="text-sm font-medium">
                                                         USD
-                                                    </Label>
+                                                    </Label> */}
                                                     <Input
                                                         id={`usd-${index}`}
                                                         placeholder="USD Balance"
                                                         type="text"
                                                         value={data.usd_balance}
-                                                        disabled={isPending}
                                                         onChange={(e) => handleInputChange(index, "usd_balance", e.target.value)}
                                                     />
-                                                    <Input
+                                                    <Label htmlFor={`address-${index}`} className="text-sm font-medium">
+                                                        USD
+                                                    </Label>
+                                                    {/* <Input
                                                         id={`address-${index}`}
                                                         placeholder="Crypto Equivalent"
                                                         type="text"
                                                         defaultValue={data.crypto_bal}
                                                         disabled={true}
-                                                    />
+                                                    /> */}
                                                     {/* Crypto Symbol After the Second Input */}
-                                                    <span className="text-sm font-medium">
+                                                    {/* <span className="text-sm font-medium">
                                                         {data.crypto_symbol.toUpperCase()}
-                                                    </span>
+                                                    </span> */}
                                                 </div>
                                                 <hr />
                                             </div>

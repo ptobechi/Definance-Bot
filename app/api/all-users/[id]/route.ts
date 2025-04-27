@@ -1,3 +1,4 @@
+import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 
 // export const runtime = 'nodejs'; // Use Node.js runtime
@@ -9,6 +10,15 @@ export const GET = async (
 ) => {
   try{
     const { id } = params;
+
+    const loggedUser = await currentUser();
+            
+    if (!loggedUser || !loggedUser.id)
+            return new Response(JSON.stringify(
+                {error: "Login to a valid account to complete this process"}),{
+                status: 504,
+                headers: { "Content-Type": "application/json" },
+            });
 
     if (!id) {
       return new Response(

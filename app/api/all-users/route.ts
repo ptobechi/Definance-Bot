@@ -1,4 +1,4 @@
-import { currentRole } from '@/lib/auth';
+import { currentRole, currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 
 // export const runtime = 'nodejs'; // Use Node.js runtime
@@ -7,6 +7,15 @@ import { db } from '@/lib/db';
 export const GET = async () => {
   try {
     const role = await currentRole();
+
+    const loggedUser = await currentUser();
+            
+    if (!loggedUser || !loggedUser.id)
+            return new Response(JSON.stringify(
+                {error: "Login to a valid account to complete this process"}),{
+                status: 504,
+                headers: { "Content-Type": "application/json" },
+            });
 
     // Check if the requester is an admin
     if (role !== "ADMIN") {

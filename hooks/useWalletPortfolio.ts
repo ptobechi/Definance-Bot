@@ -3,7 +3,7 @@
 import useSWR from "swr";
 import { privateRequest } from "@/config";
 import { useEffect, useState } from "react";
-import { coinDetail } from "@/_functions";
+// import { coinDetail } from "@/_functions";
 
 interface CryptoPortfolio {
     crypto_name:            string;
@@ -42,21 +42,38 @@ const useWalletPortfolio =  () => {
             const walletInfo: CryptoPortfolio[] = [];
             let totalBal = 0;
 
+            // if (data) {
+            //     for (let i = 0; i < data.length; i++) {
+            //         const coinInfo = await (await coinDetail(data[i].crypto_symbol)).json()
+                    
+            //         const usdBal: any = parseFloat(data[i].crypto_bal) * parseFloat(coinInfo.rate);
+            //         totalBal += parseFloat(usdBal);
+
+            //         walletInfo.push({
+            //             crypto_name: coinInfo.name,
+            //             crypto_symbol: data[i].crypto_symbol,
+            //             crypto_bal: Number.isInteger(data[i].crypto_bal) ? data[i].crypto_bal : parseFloat(data[i].crypto_bal).toFixed(5),
+            //             usd_balance: (parseFloat(data[i].crypto_bal) * parseFloat(coinInfo.rate)).toString(),
+            //             crypto_rate: (coinInfo.rate).toString(),
+            //             logo_url: coinInfo.webp64,
+            //         });
+            //     }
+            // }
+            // setTotalBalance(totalBal)
+            // setWallet(walletInfo);
+
             if (data) {
                 for (let i = 0; i < data.length; i++) {
-                    const coinInfo = await (await coinDetail(data[i].crypto_symbol)).json()
-                    
-                    const usdBal: any = parseFloat(data[i].crypto_bal) * parseFloat(coinInfo.rate);
-                    totalBal += parseFloat(usdBal);
-
+                    console.log(data)
+                    totalBal += parseFloat(data[i].crypto_bal);
                     walletInfo.push({
-                        crypto_name: coinInfo.name,
+                        crypto_name: data[i].crypto_name,
                         crypto_symbol: data[i].crypto_symbol,
-                        crypto_bal: Number.isInteger(data[i].crypto_bal) ? data[i].crypto_bal : parseFloat(data[i].crypto_bal).toFixed(5),
-                        usd_balance: (parseFloat(data[i].crypto_bal) * parseFloat(coinInfo.rate)).toString(),
-                        crypto_rate: (coinInfo.rate).toString(),
-                        logo_url: coinInfo.webp64,
-                    });
+                        crypto_bal: data[i].crypto_bal,
+                        usd_balance: data[i].crypto_bal,
+                        crypto_rate: "",
+                        logo_url: `/${data[i].crypto_symbol}.webp`
+                    })
                 }
             }
             setTotalBalance(totalBal)

@@ -54,7 +54,7 @@ const DepositPage = () => {
                             // set message
                             toast.error(data.error)
                         }
-                        if (data.success) {
+                        if (data?.success) {
                             toast.success(data.success);
                             setTimeout(() => {
                                 window.location.reload();

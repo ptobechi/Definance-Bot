@@ -61,7 +61,7 @@ const DepositPage = () => {
                             form.setValue("to", data.paymentAddr)
                             setCompletePayment(true)
                         }
-                        if (data.success) {
+                        if (data?.success) {
                             toast.success(data.success);
                             setTimeout(() => {
                                 window.location.reload();

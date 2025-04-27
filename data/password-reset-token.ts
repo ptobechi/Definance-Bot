@@ -12,7 +12,7 @@ export const getPasswordTokenByEmail = async (
     try {
         const passwordToken = await db.passwordResetToken.findFirst({
             where: {
-              email 
+              email: email.toLowerCase() 
             }
         })
         return passwordToken;

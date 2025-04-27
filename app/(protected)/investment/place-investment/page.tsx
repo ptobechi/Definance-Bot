@@ -72,7 +72,7 @@ const InvestForm = () => {
           // Check if the status code is 403
           if (error.response && error.response.status === 403) {
           } else {
-            toast("Error: try again"); // Handle 403 error here
+            toast("Error: Try again, This might be to insufficient USDT"); // Handle 403 error here
           }
         } else {
           toast("Error:unknown error occured please try again later");

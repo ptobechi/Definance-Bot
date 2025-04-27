@@ -1,8 +1,8 @@
 "use client"
 
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import logo from '@/img/logo.svg'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
     FcCandleSticks,
     FcComboChart,
@@ -28,9 +28,16 @@ interface menuProps {
 }
 export default function Sidebar({ show, setter }: sidebarProps) {
     const router = usePathname();
+    const nrouter = useRouter();
+    const [isPending, setIsPending] = useState(false)
 
-    const onSubmit = () => {
-        logOut()
+    const handleLogout = async () => {
+        setIsPending(true)
+        const result = await logOut();
+        
+        if (result?.success) {
+            nrouter.refresh(); // Force session refresh after logout
+        }
     }
 
     // Define our base class
@@ -125,13 +132,17 @@ export default function Sidebar({ show, setter }: sidebarProps) {
                             icon={<PiBagFill />}
                         />
                         <div
-                            onClick={onSubmit}
+                            onClick={handleLogout}
                             className={`flex gap-1 text-[#b1a3a3] cursor-pointer [&>*]:my-auto text-md pl-6 py-3 border-b-[1px] border-b-white/10`}
                         >
                             <div className="text-xl flex [&>*]:mx-auto w-[30px]">
                                 <IoLogOut />
                             </div>
-                            <div>Log Out</div>
+                            <div>
+                                {
+                                    isPending ? "Logging Out" : "Log Out"
+                                }
+                            </div>
                         </div>
                 </div>
             </div>

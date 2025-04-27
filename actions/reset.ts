@@ -15,7 +15,7 @@ export const reset = async (values: z.infer<typeof
 
     const {email} = validatedValues.data
 
-    const existingUser = await getUserEmail(email);
+    const existingUser = await getUserEmail(email.toLowerCase());
 
     if (!existingUser) return {error: "Email does not exist"}
 

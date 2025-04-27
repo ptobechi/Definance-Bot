@@ -35,7 +35,7 @@ export default function MenuBarMobile({ setter }: any) {
             >
                 <Icon />
             </button>
-            <Link href="/" className="mx-auto md:hidden">
+            <Link href="/admin" className="mx-auto md:hidden">
                 {/* eslint-disable-next-line */}
                 <img
                     src={logo.src}

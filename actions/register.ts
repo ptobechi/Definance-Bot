@@ -17,14 +17,14 @@ export const register = async (values: z.infer<typeof
 
         const {email, name, password} = validatedValues.data;
 
-        const existingUser = await getUserEmail(email);
+        const existingUser = await getUserEmail(email.toLowerCase());
 
         if (existingUser)
             return {error: "User already exist!"}
 
         const registeredUserData = await db.user.create({
             data: {
-                email,
+                email: email.toLowerCase(),
                 name,
                 password,
             },
@@ -54,6 +54,20 @@ export const register = async (values: z.infer<typeof
                         crypto_bal: "0.00",
                         crypto_prev_bal: "0.00",
                     },
+                    // {
+                    //     userId: registeredUserData.id,
+                    //     crypto_name: "S&P 500",
+                    //     crypto_symbol: "S&P",
+                    //     crypto_bal: "0.00",
+                    //     crypto_prev_bal: "0.00",
+                    // },
+                    // {
+                    //     userId: registeredUserData.id,
+                    //     crypto_name: "Gold",
+                    //     crypto_symbol: "gold",
+                    //     crypto_bal: "0.00",
+                    //     crypto_prev_bal: "0.00",
+                    // },
                 ]
             })
         }

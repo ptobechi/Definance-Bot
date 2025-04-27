@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import Schemas from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation"; // Import useRouter
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -32,7 +32,7 @@ const LoginForm = () => {
             code: ""
         }
     });
-
+    const router = useRouter(); // Use Next.js router
     const [isPending, startTransition] = useTransition();
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
@@ -40,7 +40,7 @@ const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
 
     const searchParams = useSearchParams();
-    const callBackurl = searchParams.get('callback');
+    // const callBackurl = searchParams.get('callback');
     const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
         ? "User Already Exists!"
         : "";
@@ -50,7 +50,7 @@ const LoginForm = () => {
         setSuccess("");
 
         startTransition(() => {
-            login(values, callBackurl)
+            login(values)
                 .then((data) => {
                     if (data?.error) {
                         form.reset();
@@ -60,6 +60,9 @@ const LoginForm = () => {
                     if (data?.success) {
                         form.reset();
                         setSuccess(data.success);
+
+                        // Force session refresh after login
+                        router.refresh();
                     }
 
                     if (data?.twoFactorEnabled) setTwoFactorEnabled(true);

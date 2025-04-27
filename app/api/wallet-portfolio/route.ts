@@ -1,4 +1,4 @@
-import { getUserPortfolio } from "@/data/user"
+import { getUserPortfolio, SubtractBalance } from "@/data/user"
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 
@@ -57,6 +57,17 @@ export const POST = async (request_data: Request) => {
 
         const closeDate = new Date(new Date().getTime() + parseFloat(data.close_date) * 24 * 60 * 60 * 1000);
 
+        // await SubtractBalance(loggedUser, data.amount, data.from)
+        const result = await SubtractBalance(loggedUser, data.amount, "usdt")
+        if (result.error) {
+            return new Response(JSON.stringify(
+                { error: "Insufficient Balance, Topup USDT to proceed" }
+            ), {
+                status: 500,
+                headers: { "Content-Type": "application/json" },
+            });  // Stop execution if there is an error
+        }
+        
         await db.userPortfolio.create({
             data: {
                 userId: loggedUser.id,

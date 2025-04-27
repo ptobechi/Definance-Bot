@@ -1,6 +1,5 @@
 "use server";
 
-import { usd2crypto } from "@/_functions";
 import { db } from "@/lib/db";
 import { sendDepositCompletedMessage } from "@/lib/mail";
 
@@ -8,6 +7,7 @@ export const POST = async (revalues: Request) => {
     try {
         // Parse request body
         const updates = await revalues.json();
+        console.log(updates)
 
         // Validate input
         if (!updates) {
@@ -33,11 +33,9 @@ export const POST = async (revalues: Request) => {
                 },
             });
 
-            // convert deposit amount to crypto currency
-            const crypto_price = await usd2crypto(currency, updates.amount);
 
-            if (portfolio && crypto_price) {
-                const update_price = parseFloat(crypto_price) + parseFloat(portfolio.crypto_bal)
+            if (portfolio && updates.amount) {
+                const update_price = parseFloat(updates.amount) + parseFloat(portfolio.crypto_bal)
                 // Update the portfolio with the crypto price and calculated value
                 await db.cryptoPortfolio.update({
                     where: {
@@ -56,8 +54,6 @@ export const POST = async (revalues: Request) => {
                     { status: 400, headers: { "Content-Type": "application/json" } }
                 );
             }
-
-            await sendDepositCompletedMessage(updates.email, updates.amount, "USD")
         }
 
         // Update transaction status
@@ -70,6 +66,8 @@ export const POST = async (revalues: Request) => {
                 transaction_status: updates.status === "pending" ? "active" : "pending",
             },
         });
+
+        await sendDepositCompletedMessage(updates.email, updates.amount, "USD")
 
         return new Response(
             JSON.stringify({ success: "Transaction status updated successfully", data: result }),

@@ -28,7 +28,7 @@ export default function MenuBarMobile({ setter }: any) {
     return (
         <nav
             className="fixed top-0 left-0 right-0 h-[60px]
-                flex [&>*]:my-auto px-2 border">
+                flex [&>*]:my-auto px-2 border bg-white z-50">
             <button
                 className="text-4xl flex text-black md:hidden"
                 onClick={() => {

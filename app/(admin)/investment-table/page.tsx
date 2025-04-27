@@ -14,6 +14,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import {
+  ArrowUpDown,
   ChevronDown,
   MoreHorizontal
 } from "lucide-react"
@@ -36,8 +37,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import useAllUser from "@/hooks/all-users"
-import { useCurrentRole } from "@/hooks/use-current-role"
-import { useRouter } from "next/navigation"
+// import { useCurrentRole } from "@/hooks/use-current-role"
+// import { useRouter } from "next/navigation"
 import Swal from "sweetalert2"
 import { formatDateToDDMMYY } from "@/_functions"
 import { privateRequest } from "@/config"
@@ -56,14 +57,15 @@ type User = {
 }
 
 export default function DataTableDemo() {
-    const role = useCurrentRole();
-    const navigate = useRouter();
-    React.useEffect(() => {
-        if (role !== "ADMIN") {
-            navigate.back(); // Redirects the user to the previous page
-        }
-    }, [role, navigate]);
-    const [sorting, setSorting] = React.useState<SortingState>([])
+    // const role = useCurrentRole();
+    // const navigate = useRouter();
+    // React.useEffect(() => {
+    //     if (role !== "ADMIN") {
+    //         navigate.back(); // Redirects the user to the previous page
+    //     }
+    // }, [role, navigate]);
+
+    // const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
@@ -82,8 +84,8 @@ export default function DataTableDemo() {
               sector: transaction.sector,
               amount: transaction.amount || "N/A",
               roi: transaction.roi || "N/A",
-              open_date: formatDateToDDMMYY(transaction.opened_date) || "N/A",
-              closing_date: formatDateToDDMMYY(transaction.close_date)
+              open_date: (transaction.opened_date) || "N/A",
+              closing_date:(transaction.close_date)
             }));
           }
           return [];
@@ -99,66 +101,66 @@ export default function DataTableDemo() {
       {
         accessorKey: "name",
         header: "Name",
-        cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("name")}</div>
-        ),
+        cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
       },
       {
         accessorKey: "iname",
-        header: "Invesment",
-        cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("iname")}</div>
-        ),
+        header: "Investment",
+        cell: ({ row }) => <div className="capitalize">{row.getValue("iname")}</div>,
       },
       {
         accessorKey: "sector",
         header: "Sector",
-        cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("sector")}</div>
-        ),
+        cell: ({ row }) => <div className="capitalize">{row.getValue("sector")}</div>,
       },
       {
         accessorKey: "amount",
         header: () => <div className="text-right">Amount</div>,
         cell: ({ row }) => {
-          const amount = parseFloat(row.getValue("amount"))
+          const amount = parseFloat(row.getValue("amount"));
     
           // Format the amount as a dollar amount
           const formatted = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
-          }).format(amount)
+          }).format(amount);
     
-          return <div className="text-right font-medium">{formatted}</div>
+          return <div className="text-right font-medium">{formatted}</div>;
         },
       },
       {
         accessorKey: "roi",
         header: "ROI",
-        cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("roi")+"%"}</div>
-        ),
+        cell: ({ row }) => <div className="capitalize">{row.getValue("roi") + "%"}</div>,
       },
       {
         accessorKey: "open_date",
-        header: "Open Date",
-        cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("open_date")}</div>
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Open Date
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
         ),
+        cell: ({ row }) => (
+          <div className="capitalize">{formatDateToDDMMYY(row.getValue("open_date"))}</div>
+        ),
+        sortingFn: "datetime", // Ensures correct sorting for date fields
       },
       {
         accessorKey: "closing_date",
         header: "Closing Date",
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("closing_date")}</div>
+          <div className="capitalize">{formatDateToDDMMYY(row.getValue("closing_date"))}</div>
         ),
       },
       {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-          const user = row.original
-    
+          const user = row.original;
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -169,17 +171,16 @@ export default function DataTableDemo() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => Delete({id:user.id, userid: user.userid})}>
-                Delete
-                {
-                isPending && "ing"}
-              </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => Delete({ id: user.id, userid: user.userid })}>
+                  Delete {isPending && "ing"}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          )
+          );
         },
       },
-    ]
+    ];
+    
 
     const [isPending, startTransition] = React.useTransition()
     const Delete = async (value: any) => {
@@ -217,24 +218,47 @@ export default function DataTableDemo() {
         });
     };
 
+    const [sorting, setSorting] = React.useState<SortingState>([
+      { id: "open_date", desc: true }, // Default sorting: Most Recent First
+    ]);
+    
     const table = useReactTable({
       data,
       columns,
       onSortingChange: setSorting,
-      onColumnFiltersChange: setColumnFilters,
       getCoreRowModel: getCoreRowModel(),
       getPaginationRowModel: getPaginationRowModel(),
       getSortedRowModel: getSortedRowModel(),
       getFilteredRowModel: getFilteredRowModel(),
       onColumnVisibilityChange: setColumnVisibility,
       onRowSelectionChange: setRowSelection,
+      onColumnFiltersChange: setColumnFilters,
       state: {
         sorting,
         columnFilters,
         columnVisibility,
         rowSelection,
       },
-    })
+    });
+
+    // const table = useReactTable({
+    //   data,
+    //   columns,
+    //   onSortingChange: setSorting,
+    //   onColumnFiltersChange: setColumnFilters,
+    //   getCoreRowModel: getCoreRowModel(),
+    //   getPaginationRowModel: getPaginationRowModel(),
+    //   getSortedRowModel: getSortedRowModel(),
+    //   getFilteredRowModel: getFilteredRowModel(),
+    //   onColumnVisibilityChange: setColumnVisibility,
+    //   onRowSelectionChange: setRowSelection,
+    //   state: {
+    //     sorting,
+    //     columnFilters,
+    //     columnVisibility,
+    //     rowSelection,
+    //   },
+    // })
 
     return (
       <div className="w-full">
@@ -247,6 +271,7 @@ export default function DataTableDemo() {
             }
             className="max-w-sm"
           />
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">

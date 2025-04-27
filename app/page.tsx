@@ -6,6 +6,7 @@ import WhoWeAre from '@/components/landing/who-we-are'
 import Link from 'next/link'
 import Footer from '@/components/landing/footer'
 import Header from '@/components/header'
+// import Hero from '@/components/landing/hero'
 
 
 const Home = () => {
@@ -26,6 +27,7 @@ const Home = () => {
             className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
           />
         </div>
+        {/* <Hero/> */}
 
         <div className="mx-auto max-w-2xl pt-20 sm:pt-48 lg:pt-56">
           <div className="text-left">
